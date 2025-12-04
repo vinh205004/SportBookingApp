@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/dist_all"
+        android:title="Tất cả (Không giới hạn)" />
+    <item
+        android:id="@+id/dist_2km"
+        android:title="Dưới 2 km" />
+    <item
+        android:id="@+id/dist_5km"
+        android:title="Dưới 5 km" />
+    <item
+        android:id="@+id/dist_10km"
+        android:title="Dưới 10 km" />
+    <item
+        android:id="@+id/dist_20km"
+        android:title="Dưới 20 km" />
+</menu>
