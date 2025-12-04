@@ -8,7 +8,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Tên DB
     private static final String DATABASE_NAME = "SportBooking.db";
-    private static final int DATABASE_VERSION = 1;
+    // Tăng version lên 2 vì đã thay đổi cấu trúc bảng
+    private static final int DATABASE_VERSION = 2;
 
     // Bảng USER
     public static final String TABLE_USER = "users";
@@ -29,6 +30,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_COURT_FACILITIES = "facilities";
     public static final String COL_COURT_LAT = "latitude";
     public static final String COL_COURT_LNG = "longitude";
+    // Thêm 3 cột mới cho đúng thiết kế
+    public static final String COL_COURT_DESC = "description";
+    public static final String COL_COURT_OPEN = "open_time";
+    public static final String COL_COURT_CLOSE = "close_time";
 
     // Bảng BOOKING (Lịch đặt)
     public static final String TABLE_BOOKING = "bookings";
@@ -58,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_USER_EMAIL + " TEXT)";
         db.execSQL(createUser);
 
-        // 2. Tạo bảng Court
+        // 2. Tạo bảng Court (Đã thêm cột mới)
         String createCourt = "CREATE TABLE " + TABLE_COURT + " (" +
                 COL_COURT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_COURT_NAME + " TEXT, " +
@@ -69,7 +74,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_COURT_RATING + " REAL, " +
                 COL_COURT_FACILITIES + " TEXT, " +
                 COL_COURT_LAT + " REAL, " +
-                COL_COURT_LNG + " REAL)";
+                COL_COURT_LNG + " REAL, " +
+                COL_COURT_DESC + " TEXT, " +
+                COL_COURT_OPEN + " TEXT, " +
+                COL_COURT_CLOSE + " TEXT)";
         db.execSQL(createCourt);
 
         // 3. Tạo bảng Booking
@@ -87,16 +95,51 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_BOOKING_PAYMENT + " TEXT)";
         db.execSQL(createBooking);
 
-        // Tạo sẵn user mặc định
+        // --- MOCK DATA ---
+
+        // User mặc định
         db.execSQL("INSERT INTO " + TABLE_USER + " ("+COL_USER_NAME+", "+COL_USER_PHONE+", "+COL_USER_EMAIL+") " +
                 "VALUES ('Nguyen Van A', '0987654321', 'nguyenvana@gmail.com')");
 
-        db.execSQL("INSERT INTO " + TABLE_COURT + " VALUES (null, 'Sân bóng Thanh Xuân', '123 Thanh Xuân, Hà Nội', 'BongDa', 150000, 'san_bong_1', 4.5, 'Wifi,Parking,WC', 21.0000, 105.8000)");
-        db.execSQL("INSERT INTO " + TABLE_COURT + " VALUES (null, 'Sân Tennis Cầu Giấy', 'Cầu Giấy, Hà Nội', 'Tennis', 200000, 'san_tennis_1', 4.8, 'Parking,Store', 21.0300, 105.7800)");
+        // Sân 1: Sân bóng Thanh Xuân (Dữ liệu khớp hình ảnh)
+        // Lưu ý: Chuỗi facilities và description dài nên tách ra cho dễ nhìn
+        String descTX = "Sân bóng đá cỏ nhân tạo chất lượng cao, nằm ngay trung tâm quận Thanh Xuân. Hệ thống chiếu sáng hiện đại, có chỗ để xe rộng rãi.";
+        String insertSan1 = "INSERT INTO " + TABLE_COURT + " VALUES (" +
+                "null, " +
+                "'Sân bóng Thanh Xuân', " +
+                "'123 Thanh Xuân, Hà Nội', " +
+                "'Sân bóng đá 7 người', " +
+                "150000, " +
+                "'san_bong_1', " +
+                "4.5, " +
+                "'Wifi,Canteen,Parking,Shower', " + // Tiện ích
+                "21.0000, 105.8000, " +
+                "'" + descTX + "', " + // Description
+                "'06:00', " + // Open
+                "'23:00')";   // Close
+        db.execSQL(insertSan1);
+
+        // Sân 2: Sân Tennis
+        String descCG = "Sân Tennis đạt chuẩn quốc tế, mặt sân cứng, độ nảy bóng tốt.";
+        String insertSan2 = "INSERT INTO " + TABLE_COURT + " VALUES (" +
+                "null, " +
+                "'Sân Tennis Cầu Giấy', " +
+                "'Cầu Giấy, Hà Nội', " +
+                "'Tennis', " +
+                "200000, " +
+                "'san_tennis_1', " +
+                "4.8, " +
+                "'Parking,Store,Wifi', " +
+                "21.0300, 105.7800, " +
+                "'" + descCG + "', " +
+                "'05:00', " +
+                "'22:00')";
+        db.execSQL(insertSan2);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Xóa bảng cũ tạo lại bảng mới khi tăng version
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_COURT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKING);
