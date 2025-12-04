@@ -82,7 +82,11 @@ public class CourtDAO {
                 cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_COURT_RATING)),
                 cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_COURT_FACILITIES)),
                 cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_COURT_LAT)),
-                cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_COURT_LNG))
+                cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_COURT_LNG)),
+                // Thêm 3 trường mới
+                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_COURT_DESC)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_COURT_OPEN)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_COURT_CLOSE))
         );
     }
 }

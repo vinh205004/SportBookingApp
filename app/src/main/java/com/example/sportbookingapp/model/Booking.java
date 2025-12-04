@@ -1,4 +1,5 @@
 package com.example.sportbookingapp.model;
+
 import java.io.Serializable;
 
 public class Booking implements Serializable {
@@ -7,12 +8,12 @@ public class Booking implements Serializable {
     private int courtId;
     private String courtName;
     private String courtImage;
-    private String date;
-    private String startTime;
-    private String endTime;
+    private String date;        // Format: dd/MM/yyyy
+    private String startTime;   // Format: HH:mm
+    private String endTime;     // Format: HH:mm
     private double totalPrice;
-    private String status;
-    private String paymentMethod;
+    private String status;      // "CONFIRMED", "CANCELLED", "PENDING"
+    private String paymentMethod; // "CASH", "BANKING"
 
     public Booking(int id, int userId, int courtId, String courtName, String courtImage,
                    String date, String startTime, String endTime,
@@ -30,6 +31,21 @@ public class Booking implements Serializable {
         this.paymentMethod = paymentMethod;
     }
 
+    // Constructor rút gọn để tạo Booking mới (chưa có ID)
+    public Booking(int userId, int courtId, String courtName, String courtImage,
+                   String date, String startTime, String endTime,
+                   double totalPrice, String status, String paymentMethod) {
+        this.userId = userId;
+        this.courtId = courtId;
+        this.courtName = courtName;
+        this.courtImage = courtImage;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.totalPrice = totalPrice;
+        this.status = status;
+        this.paymentMethod = paymentMethod;
+    }
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

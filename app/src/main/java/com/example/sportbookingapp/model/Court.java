@@ -6,15 +6,23 @@ public class Court implements Serializable {
     private int id;
     private String name;
     private String address;
-    private String type;
-    private double price;
-    private String imageName;
-    private double rating;
-    private String facilities;
-    private double lat;
-    private double lng;
+    private String type;        // Ví dụ: "Sân 7 người"
+    private double price;       // Ví dụ: 150000
+    private String imageName;   // Tên ảnh trong drawable
+    private double rating;      // Ví dụ: 4.5
+    private String facilities;  // Ví dụ: "Wifi,Canteen,Parking" (Lưu chuỗi rồi cắt ra xử lý sau)
+    private double lat;         // Dùng cho Google Map
+    private double lng;         // Dùng cho Google Map
 
-    public Court(int id, String name, String address, String type, double price, String imageName, double rating, String facilities, double lat, double lng) {
+    // --- BỔ SUNG MỚI ---
+    private String description; // "Mô tả & Tiện ích..."
+    private String openTime;    // "06:00"
+    private String closeTime;   // "23:00"
+
+    // Constructor cập nhật đầy đủ
+    public Court(int id, String name, String address, String type, double price, String imageName,
+                 double rating, String facilities, double lat, double lng,
+                 String description, String openTime, String closeTime) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -25,6 +33,9 @@ public class Court implements Serializable {
         this.facilities = facilities;
         this.lat = lat;
         this.lng = lng;
+        this.description = description;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
     }
 
     // --- GETTER ---
@@ -39,6 +50,12 @@ public class Court implements Serializable {
     public double getLat() { return lat; }
     public double getLng() { return lng; }
 
+    // Getter mới
+    public String getDescription() { return description; }
+    public String getOpenTime() { return openTime; }
+    public String getCloseTime() { return closeTime; }
+
+    // --- SETTER ---
     public void setId(int id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setAddress(String address) { this.address = address; }
@@ -49,4 +66,9 @@ public class Court implements Serializable {
     public void setFacilities(String facilities) { this.facilities = facilities; }
     public void setLat(double lat) { this.lat = lat; }
     public void setLng(double lng) { this.lng = lng; }
+
+    // Setter mới
+    public void setDescription(String description) { this.description = description; }
+    public void setOpenTime(String openTime) { this.openTime = openTime; }
+    public void setCloseTime(String closeTime) { this.closeTime = closeTime; }
 }
