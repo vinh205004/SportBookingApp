@@ -1,7 +1,6 @@
 package com.example.sportbookingapp.activity;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,12 +10,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,12 +69,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     // Biến vị trí
     private LocationManager locationManager;
-    private double userLat = 21.0285;
+    private double userLat = 21.0285; // Mặc định Hà Nội
     private double userLng = 105.8542;
     private boolean isLocationFound = false;
     private MyLocationNewOverlay myLocationOverlay;
 
-    // Chế độ xem
+    // Chế độ xem (List hoặc Map)
     private boolean isMapMode = true;
     private static final int PERMISSION_REQUEST_CODE = 100;
 
@@ -83,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 1. Cấu hình OSM
+        // 1. Cấu hình OSM (Bắt buộc để load bản đồ)
         Configuration.getInstance().load(getApplicationContext(),
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
         Configuration.getInstance().setUserAgentValue(getPackageName());
@@ -103,14 +102,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         courtDAO = new CourtDAO(this);
         originalCourtList = courtDAO.getAllCourts();
 
-        // Setup Adapter
+        // Setup Adapter cho RecyclerView
         adapter = new CourtAdapter(this, new ArrayList<>(originalCourtList), new CourtAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Court court) {
-                // Chuyển màn hình Detail (đã uncomment để bạn dùng)
-//                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-//                intent.putExtra("selected_court", court);
-//                startActivity(intent);
+                goToDetail(court);
             }
         });
         rvCourts.setAdapter(adapter);
@@ -142,6 +138,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         GeoPoint startPoint = new GeoPoint(userLat, userLng);
         mapView.getController().setZoom(15.0);
         mapView.getController().setCenter(startPoint);
+
+        // Overlay hiển thị vị trí của tôi
         myLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(this), mapView);
         myLocationOverlay.enableMyLocation();
         myLocationOverlay.enableFollowLocation();
@@ -153,7 +151,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private void checkAndRequestLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            // Xin quyền
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     PERMISSION_REQUEST_CODE);
@@ -165,16 +162,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private void getUserLocation() {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         try {
-            // Lấy vị trí cuối cùng được lưu
+            // Lấy vị trí cuối cùng được lưu để hiển thị nhanh
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (lastKnownLocation != null) {
                 userLat = lastKnownLocation.getLatitude();
                 userLng = lastKnownLocation.getLongitude();
                 isLocationFound = true;
-                // Di chuyển map đến vị trí ngay
                 mapView.getController().animateTo(new GeoPoint(userLat, userLng));
             }
 
+            // Yêu cầu cập nhật vị trí liên tục
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 10, this);
 
@@ -186,12 +183,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        // Cập nhật tọa độ khi người dùng di chuyển
         userLat = location.getLatitude();
         userLng = location.getLongitude();
         isLocationFound = true;
 
-        // Nếu đang bật lọc khoảng cách, thì phải lọc lại danh sách realtime
+        // Nếu đang bật lọc khoảng cách, cập nhật lại danh sách
         if (filterDistanceKm > 0) {
             applyFilters();
         }
@@ -203,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getUserLocation();
-                myLocationOverlay.enableMyLocation();
+                if (myLocationOverlay != null) myLocationOverlay.enableMyLocation();
             } else {
                 Toast.makeText(this, "Cần quyền vị trí để tìm sân gần bạn", Toast.LENGTH_SHORT).show();
             }
@@ -218,36 +214,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             return;
         }
 
-        // Tạo PopupMenu gắn vào nút bấm (view)
-        android.widget.PopupMenu popup = new android.widget.PopupMenu(this, view);
+        PopupMenu popup = new PopupMenu(this, view);
         popup.getMenuInflater().inflate(R.menu.menu_distance, popup.getMenu());
 
-        // Xử lý khi chọn item
         popup.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
 
-            if (id == R.id.dist_all) {
-                filterDistanceKm = 0;
-                Toast.makeText(MainActivity.this, "Hiển thị tất cả sân", Toast.LENGTH_SHORT).show();
-            }
-            else if (id == R.id.dist_2km) {
-                filterDistanceKm = 2;
-                Toast.makeText(MainActivity.this, "Lọc sân dưới 2km", Toast.LENGTH_SHORT).show();
-            }
-            else if (id == R.id.dist_5km) {
-                filterDistanceKm = 5;
-                Toast.makeText(MainActivity.this, "Lọc sân dưới 5km", Toast.LENGTH_SHORT).show();
-            }
-            else if (id == R.id.dist_10km) {
-                filterDistanceKm = 10;
-                Toast.makeText(MainActivity.this, "Lọc sân dưới 10km", Toast.LENGTH_SHORT).show();
-            }
-            else if (id == R.id.dist_20km) {
-                filterDistanceKm = 20;
-                Toast.makeText(MainActivity.this, "Lọc sân dưới 20km", Toast.LENGTH_SHORT).show();
-            }
+            if (id == R.id.dist_all) filterDistanceKm = 0;
+            else if (id == R.id.dist_2km) filterDistanceKm = 2;
+            else if (id == R.id.dist_5km) filterDistanceKm = 5;
+            else if (id == R.id.dist_10km) filterDistanceKm = 10;
+            else if (id == R.id.dist_20km) filterDistanceKm = 20;
 
-            // Gọi hàm lọc lại danh sách
+            Toast.makeText(MainActivity.this, "Đang lọc...", Toast.LENGTH_SHORT).show();
             applyFilters();
             return true;
         });
@@ -276,13 +255,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 if (c.getType() == null || !c.getType().contains(currentSportFilter)) matchType = false;
             }
 
-            // 3. Lọc khoảng cách (Real Logic)
+            // 3. Lọc khoảng cách
             if (filterDistanceKm > 0 && isLocationFound) {
                 float[] results = new float[1];
-                // Tính khoảng cách giữa (User) và (Sân)
                 Location.distanceBetween(userLat, userLng, c.getLat(), c.getLng(), results);
-                float distanceInMeters = results[0];
-                float distanceInKm = distanceInMeters / 1000;
+                float distanceInKm = results[0] / 1000;
 
                 if (distanceInKm > filterDistanceKm) {
                     matchDistance = false;
@@ -292,17 +269,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             if (matchName && matchType && matchDistance) filteredList.add(c);
         }
 
-        // Tối ưu: Nếu đang lọc khoảng cách, Sắp xếp sân gần nhất lên đầu
+        // Sắp xếp sân gần nhất lên đầu nếu có lọc khoảng cách
         if (filterDistanceKm > 0 && isLocationFound) {
-            Collections.sort(filteredList, new Comparator<Court>() {
-                @Override
-                public int compare(Court c1, Court c2) {
-                    float[] res1 = new float[1];
-                    float[] res2 = new float[1];
-                    Location.distanceBetween(userLat, userLng, c1.getLat(), c1.getLng(), res1);
-                    Location.distanceBetween(userLat, userLng, c2.getLat(), c2.getLng(), res2);
-                    return Float.compare(res1[0], res2[0]);
-                }
+            Collections.sort(filteredList, (c1, c2) -> {
+                float[] res1 = new float[1];
+                float[] res2 = new float[1];
+                Location.distanceBetween(userLat, userLng, c1.getLat(), c1.getLng(), res1);
+                Location.distanceBetween(userLat, userLng, c2.getLat(), c2.getLng(), res2);
+                return Float.compare(res1[0], res2[0]);
             });
         }
 
@@ -313,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private void updateMapMarkers(List<Court> listToDraw) {
         if (mapView == null) return;
 
-        // Xóa marker cũ (trừ marker vị trí của tôi - MyLocationOverlay)
+        // Xóa marker cũ
         mapView.getOverlays().removeAll(currentMarkers);
         currentMarkers.clear();
 
@@ -321,25 +295,28 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             Marker marker = new Marker(mapView);
             marker.setPosition(new GeoPoint(court.getLat(), court.getLng()));
             marker.setTitle(court.getName());
-            marker.setSnippet(String.format("%,.0f đ/h", court.getPrice()));
+            // Hiển thị giá trong bubble
+            marker.setSnippet(String.format("%,.0f đ/h\n(Bấm lần nữa để xem chi tiết)", court.getPrice()));
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 
+            // --- SỬA LỖI: Thay thế logic click vào info window bằng click vào Marker ---
             marker.setOnMarkerClickListener((m, map) -> {
-                m.showInfoWindow();
-                return true;
+                if (m.isInfoWindowShown()) {
+                    // Nếu bong bóng đã hiện -> Click lần 2 -> Vào chi tiết
+                    goToDetail(court);
+                    m.closeInfoWindow(); // Đóng lại cho gọn
+                } else {
+                    // Nếu chưa hiện -> Click lần 1 -> Hiện bong bóng (Giá tiền)
+                    m.showInfoWindow();
+                }
+                return true; // Sự kiện đã được xử lý
             });
-
-//            marker.setOnInfoWindowClickListener((m, map) -> {
-//                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-//                intent.putExtra("selected_court", court);
-//                startActivity(intent);
-//            });
 
             mapView.getOverlays().add(marker);
             currentMarkers.add(marker);
         }
 
-        // Đảm bảo MyLocationOverlay luôn nằm trên cùng
+        // Đảm bảo icon vị trí tôi luôn nằm trên cùng
         if(myLocationOverlay != null && !mapView.getOverlays().contains(myLocationOverlay)){
             mapView.getOverlays().add(myLocationOverlay);
         }
@@ -347,27 +324,31 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         mapView.invalidate();
     }
 
+    // Hàm chuyển màn hình dùng chung
+    private void goToDetail(Court court) {
+        Intent intent = new Intent(MainActivity.this, CourtDetailActivity.class);
+        intent.putExtra("court_object", court); // Key "court_object" khớp với CourtDetailActivity
+        startActivity(intent);
+    }
+
     private void setupEvents() {
         // Search
         edtSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
                 currentSearchKeyword = s.toString().trim();
                 btnClearSearch.setVisibility(currentSearchKeyword.length() > 0 ? View.VISIBLE : View.GONE);
                 applyFilters();
             }
-            @Override
-            public void afterTextChanged(Editable s) {}
+            @Override public void afterTextChanged(Editable s) {}
         });
 
         btnClearSearch.setOnClickListener(v -> edtSearch.setText(""));
 
-        // Nút Lọc khoảng cách
+        // Lọc khoảng cách
         btnFilterDistance.setOnClickListener(v -> showDistancePopup(v));
 
-        // Chip Filter
+        // Chip Filter (Lọc theo môn thể thao)
         chipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
             if (checkedIds.isEmpty()) currentSportFilter = "";
             else {
@@ -381,34 +362,26 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             applyFilters();
         });
 
-        // FAB Toggle List/Map
+        // Nút chuyển đổi List/Map
         fabList.setOnClickListener(v -> {
             if (isMapMode) {
                 mapView.setVisibility(View.GONE);
                 rvCourts.setVisibility(View.VISIBLE);
-                fabList.setImageResource(android.R.drawable.ic_dialog_map);
+                fabList.setImageResource(android.R.drawable.ic_dialog_map); // Icon bản đồ
                 isMapMode = false;
             } else {
                 mapView.setVisibility(View.VISIBLE);
                 rvCourts.setVisibility(View.GONE);
-                fabList.setImageResource(android.R.drawable.ic_menu_sort_by_size);
+                fabList.setImageResource(android.R.drawable.ic_menu_sort_by_size); // Icon list
                 isMapMode = true;
             }
         });
 
-        // Bottom Nav
+        // Bottom Navigation
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_explore) return true;
-            else if (id == R.id.nav_booking) {
-//                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
-//                startActivity(intent);
-//                return true;
-            } else if (id == R.id.nav_profile) {
-//                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-//                startActivity(intent);
-//                return true;
-            }
+            // Các phần khác chưa có activity thì tạm comment
             return false;
         });
     }
@@ -425,7 +398,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onPause();
         if (mapView != null) mapView.onPause();
         if (myLocationOverlay != null) myLocationOverlay.disableMyLocation();
-        // Dừng lấy vị trí để tiết kiệm pin
         if (locationManager != null) locationManager.removeUpdates(this);
     }
 }

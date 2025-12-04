@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- 1. QUAN TRỌNG: Thêm 2 dòng quyền này vào ngay trên thẻ application -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,7 +18,7 @@
         android:theme="@style/Theme.SportBookingApp"
         tools:targetApi="31">
 
-        <!-- 1. Màn hình chính (Chạy đầu tiên) -->
+        <!-- Màn hình chính -->
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">
@@ -23,12 +28,12 @@
             </intent-filter>
         </activity>
 
-        <!-- 2. Màn hình Chi tiết sân (Cần thêm cái này để sửa lỗi crash) -->
+        <!-- Màn hình Chi tiết sân -->
         <activity
             android:name=".activity.CourtDetailActivity"
             android:exported="false" />
 
-        <!-- 3. Màn hình Đặt sân (Khai báo luôn để dùng sau) -->
+        <!-- Màn hình Đặt sân -->
         <activity
             android:name=".activity.BookingActivity"
             android:exported="false" />
