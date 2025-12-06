@@ -75,8 +75,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:orientation="horizontal">
-                        <TextView text="Sân:" android:layout_width="80dp" android:layout_height="wrap_content"/>
-                        <TextView android:id="@+id/tvCourtNameConfirm" text="Sân bóng Thanh Xuân" android:textStyle="bold" android:textColor="#000000" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="Sân:" android:layout_width="80dp" android:layout_height="wrap_content"/>
+                        <TextView android:id="@+id/tvCourtNameConfirm" android:text="Sân bóng Thanh Xuân" android:textStyle="bold" android:textColor="#000000" android:layout_width="match_parent" android:layout_height="wrap_content"/>
                     </LinearLayout>
 
                     <!-- Địa chỉ -->
@@ -85,8 +85,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal">
-                        <TextView text="Địa chỉ:" android:layout_width="80dp" android:layout_height="wrap_content"/>
-                        <TextView android:id="@+id/tvCourtAddressConfirm" text="123 Nguyễn Trãi..." android:textColor="#616161" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="Địa chỉ:" android:layout_width="80dp" android:layout_height="wrap_content"/>
+                        <TextView android:id="@+id/tvCourtAddressConfirm" android:text="123 Nguyễn Trãi..." android:textColor="#616161" android:layout_width="match_parent" android:layout_height="wrap_content"/>
                     </LinearLayout>
 
                     <!-- Ngày -->
@@ -95,8 +95,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal">
-                        <TextView text="Ngày:" android:layout_width="80dp" android:layout_height="wrap_content"/>
-                        <TextView android:id="@+id/tvDateConfirm" text="20/07/2024" android:textColor="#000000" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="Ngày:" android:layout_width="80dp" android:layout_height="wrap_content"/>
+                        <TextView android:id="@+id/tvDateConfirm" android:text="20/07/2024" android:textColor="#000000" android:layout_width="match_parent" android:layout_height="wrap_content"/>
                     </LinearLayout>
 
                     <!-- Giờ -->
@@ -105,8 +105,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal">
-                        <TextView text="Giờ:" android:layout_width="80dp" android:layout_height="wrap_content"/>
-                        <TextView android:id="@+id/tvTimeConfirm" text="19:00 - 20:00" android:textStyle="bold" android:textColor="#000000" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="Giờ:" android:layout_width="80dp" android:layout_height="wrap_content"/>
+                        <TextView android:id="@+id/tvTimeConfirm" android:text="19:00 - 20:00" android:textStyle="bold" android:textColor="#000000" android:layout_width="match_parent" android:layout_height="wrap_content"/>
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE" android:layout_marginVertical="12dp"/>
@@ -115,9 +115,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                        <TextView text="Tổng tiền:" android:textColor="#2196F3" android:textStyle="bold" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:text="Tổng tiền:" android:textColor="#2196F3" android:textStyle="bold" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                         <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
-                        <TextView android:id="@+id/tvTotalPriceConfirm" text="150.000 VNĐ" android:textColor="#2196F3" android:textStyle="bold" android:textSize="18sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:id="@+id/tvTotalPriceConfirm" android:text="150.000 VNĐ" android:textColor="#2196F3" android:textStyle="bold" android:textSize="18sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                     </LinearLayout>
 
                 </LinearLayout>

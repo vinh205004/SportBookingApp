@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    app:cardBackgroundColor="#FFFFFF">
+    app:cardBackgroundColor="#FFFFFF"
+    tools:ignore="HardcodedText,ContentDescription">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -87,11 +89,23 @@
                 android:textColor="#616161"/>
         </LinearLayout>
 
+        <!-- MỚI THÊM: Trạng thái thanh toán -->
+        <TextView
+            android:id="@+id/tvPaymentStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="24dp"
+            android:text="Chưa thanh toán"
+            android:textSize="13sp"
+            android:textStyle="italic"
+            android:textColor="#FF9800"/>
+
         <TextView
             android:id="@+id/tvPriceHistory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:text="Tổng tiền: 150.000 VNĐ"
             android:textColor="#4CAF50"
             android:textStyle="bold"/>
@@ -106,14 +120,15 @@
 
             <Button
                 android:id="@+id/btnCancelBooking"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:text="Hủy đặt"
-                android:textSize="12sp"
-                android:textColor="#F44336"
-                android:backgroundTint="#FFEBEE"
                 android:layout_marginStart="8dp"
-                style="@style/Widget.MaterialComponents.Button.TextButton"/>
+                android:backgroundTint="#FFEBEE"
+                android:text="Hủy đặt"
+                android:textColor="#F44336"
+                android:textSize="12sp"
+                tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
 
     </LinearLayout>

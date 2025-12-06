@@ -2,10 +2,14 @@ package com.example.sportbookingapp.activity;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Intent; // Thêm import
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +21,7 @@ import com.example.sportbookingapp.adapter.BookingHistoryAdapter;
 import com.example.sportbookingapp.database.BookingDAO;
 import com.example.sportbookingapp.database.DatabaseHelper;
 import com.example.sportbookingapp.model.Booking;
+import com.google.android.material.bottomnavigation.BottomNavigationView; // Thêm import
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +30,16 @@ public class HistoryActivity extends AppCompatActivity {
 
     private RecyclerView rcvHistory;
     private ImageView btnBack;
+    private TextView tabUpcoming, tabHistory;
+    private BottomNavigationView bottomNavigationView; // Khai báo Menu đáy
+
     private BookingDAO bookingDAO;
     private BookingHistoryAdapter adapter;
-    private List<Booking> bookingList;
-    private int userId = 1; // Mặc định user 1
+
+    private List<Booking> allBookings;
+    private List<Booking> displayList;
+    private int userId = 1;
+    private boolean isShowingUpcoming = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,46 +49,128 @@ public class HistoryActivity extends AppCompatActivity {
         initViews();
         bookingDAO = new BookingDAO(this);
 
-        // Setup RecyclerView
         rcvHistory.setLayoutManager(new LinearLayoutManager(this));
-        bookingList = new ArrayList<>();
-        adapter = new BookingHistoryAdapter(this, bookingList, this::showCancelDialog);
+        allBookings = new ArrayList<>();
+        displayList = new ArrayList<>();
+
+        adapter = new BookingHistoryAdapter(this, displayList, this::showCancelDialog);
         rcvHistory.setAdapter(adapter);
 
         loadData();
+        setupEvents();
 
-        btnBack.setOnClickListener(v -> finish());
+        // --- CẤU HÌNH MENU ĐÁY ---
+        // Đánh dấu mục "Lịch đặt" là đang chọn
+        bottomNavigationView.setSelectedItemId(R.id.nav_booking);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_explore) {
+                // Chuyển về Trang chủ
+                Intent intent = new Intent(HistoryActivity.this, MainActivity.class);
+                // Xóa stack để khi back không quay lại đây nữa (tùy chọn)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish(); // Đóng màn hình này lại
+                return true;
+            } else if (id == R.id.nav_booking) {
+                return true; // Đang ở đây rồi
+            } else if (id == R.id.nav_profile) {
+                // Chuyển sang Cá nhân (nếu có)
+                // Intent intent = new Intent(HistoryActivity.this, ProfileActivity.class);
+                // startActivity(intent);
+                // finish();
+                return false;
+            }
+            return false;
+        });
     }
 
     private void initViews() {
         rcvHistory = findViewById(R.id.rcvBookingHistory);
         btnBack = findViewById(R.id.btnBackHistory);
+        tabUpcoming = findViewById(R.id.tabUpcoming);
+        tabHistory = findViewById(R.id.tabHistory);
+        bottomNavigationView = findViewById(R.id.bottom_navigation); // Ánh xạ
+    }
+
+    private void setupEvents() {
+        btnBack.setOnClickListener(v -> {
+            // Khi bấm nút Back (mũi tên trên cùng), quay về trang chủ
+            Intent intent = new Intent(HistoryActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        });
+
+        tabUpcoming.setOnClickListener(v -> {
+            if (!isShowingUpcoming) {
+                isShowingUpcoming = true;
+                updateTabUI();
+                filterData();
+            }
+        });
+
+        tabHistory.setOnClickListener(v -> {
+            if (isShowingUpcoming) {
+                isShowingUpcoming = false;
+                updateTabUI();
+                filterData();
+            }
+        });
+    }
+
+    private void updateTabUI() {
+        if (isShowingUpcoming) {
+            tabUpcoming.setBackgroundResource(R.drawable.bg_card_info_item);
+            tabUpcoming.setTypeface(null, Typeface.BOLD);
+            tabUpcoming.setTextColor(Color.parseColor("#333333"));
+
+            tabHistory.setBackground(null);
+            tabHistory.setTypeface(null, Typeface.NORMAL);
+            tabHistory.setTextColor(Color.parseColor("#757575"));
+        } else {
+            tabHistory.setBackgroundResource(R.drawable.bg_card_info_item);
+            tabHistory.setTypeface(null, Typeface.BOLD);
+            tabHistory.setTextColor(Color.parseColor("#333333"));
+
+            tabUpcoming.setBackground(null);
+            tabUpcoming.setTypeface(null, Typeface.NORMAL);
+            tabUpcoming.setTextColor(Color.parseColor("#757575"));
+        }
     }
 
     private void loadData() {
-        // Gọi hàm lấy danh sách từ DAO
-        bookingList = bookingDAO.getBookingsByUser(userId);
-        if (bookingList.isEmpty()) {
-            Toast.makeText(this, "Bạn chưa có lịch đặt nào", Toast.LENGTH_SHORT).show();
+        allBookings = bookingDAO.getBookingsByUser(userId);
+        filterData();
+    }
+
+    private void filterData() {
+        displayList.clear();
+        for (Booking b : allBookings) {
+            if (isShowingUpcoming) {
+                if ("CONFIRMED".equals(b.getStatus())) {
+                    displayList.add(b);
+                }
+            } else {
+                if ("CANCELLED".equals(b.getStatus())) {
+                    displayList.add(b);
+                }
+            }
         }
-        adapter.updateList(bookingList);
+        adapter.updateList(displayList);
     }
 
     private void showCancelDialog(Booking booking) {
         new AlertDialog.Builder(this)
                 .setTitle("Xác nhận hủy")
-                .setMessage("Bạn có chắc chắn muốn hủy lịch đặt sân này không?")
-                .setPositiveButton("Hủy sân", (dialog, which) -> {
-                    cancelBooking(booking);
-                })
+                .setMessage("Bạn có muốn hủy lịch: " + booking.getCourtName() + " lúc " + booking.getStartTime() + "?")
+                .setPositiveButton("Đồng ý", (dialog, which) -> cancelBooking(booking))
                 .setNegativeButton("Đóng", null)
                 .show();
     }
 
     private void cancelBooking(Booking booking) {
-        // Cập nhật trạng thái trong Database
-        // Lưu ý: Cần thêm hàm updateStatus trong BookingDAO,
-        // hoặc dùng code nhanh ở đây:
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -88,10 +181,8 @@ public class HistoryActivity extends AppCompatActivity {
                 new String[]{String.valueOf(booking.getId())});
 
         if (rows > 0) {
-            Toast.makeText(this, "Đã hủy lịch thành công!", Toast.LENGTH_SHORT).show();
-            loadData(); // Load lại danh sách
-        } else {
-            Toast.makeText(this, "Lỗi khi hủy!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Đã hủy thành công", Toast.LENGTH_SHORT).show();
+            loadData();
         }
     }
 }

@@ -295,21 +295,21 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             Marker marker = new Marker(mapView);
             marker.setPosition(new GeoPoint(court.getLat(), court.getLng()));
             marker.setTitle(court.getName());
-            // Hiển thị giá trong bubble
+            // Gợi ý người dùng bấm lần nữa để vào chi tiết
             marker.setSnippet(String.format("%,.0f đ/h\n(Bấm lần nữa để xem chi tiết)", court.getPrice()));
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 
-            // --- SỬA LỖI: Thay thế logic click vào info window bằng click vào Marker ---
+            // --- QUAY LẠI LOGIC CŨ (AN TOÀN & KHÔNG LỖI) ---
             marker.setOnMarkerClickListener((m, map) -> {
                 if (m.isInfoWindowShown()) {
-                    // Nếu bong bóng đã hiện -> Click lần 2 -> Vào chi tiết
+                    // Đã hiện -> Bấm lần 2 -> Vào chi tiết
                     goToDetail(court);
-                    m.closeInfoWindow(); // Đóng lại cho gọn
+                    m.closeInfoWindow();
                 } else {
-                    // Nếu chưa hiện -> Click lần 1 -> Hiện bong bóng (Giá tiền)
+                    // Chưa hiện -> Bấm lần 1 -> Hiện thông tin giá
                     m.showInfoWindow();
                 }
-                return true; // Sự kiện đã được xử lý
+                return true;
             });
 
             mapView.getOverlays().add(marker);
@@ -324,10 +324,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         mapView.invalidate();
     }
 
-    // Hàm chuyển màn hình dùng chung
     private void goToDetail(Court court) {
         Intent intent = new Intent(MainActivity.this, CourtDetailActivity.class);
-        intent.putExtra("court_object", court); // Key "court_object" khớp với CourtDetailActivity
+        intent.putExtra("court_object", court);
         startActivity(intent);
     }
 
@@ -377,11 +376,22 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
         });
 
-        // Bottom Navigation
+        // --- CẬP NHẬT: Xử lý Bottom Navigation ---
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.nav_explore) return true;
-            // Các phần khác chưa có activity thì tạm comment
+            if (id == R.id.nav_explore) {
+                return true; // Đang ở trang khám phá rồi
+            } else if (id == R.id.nav_booking) {
+                // Chuyển sang màn hình Lịch sử đặt sân
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(intent);
+                return true;
+            } else if (id == R.id.nav_profile) {
+                // Chuyển sang màn hình Cá nhân (nếu có)
+                // Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                // startActivity(intent);
+                return false; // Tạm thời chưa có nên trả về false
+            }
             return false;
         });
     }

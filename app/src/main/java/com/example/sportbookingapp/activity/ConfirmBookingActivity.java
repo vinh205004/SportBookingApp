@@ -29,7 +29,7 @@ public class ConfirmBookingActivity extends AppCompatActivity {
 
     private Court currentCourt;
     private String selectedDate;
-    private ArrayList<String> selectedSlots; // Danh sách chuỗi giờ (vd: "19:00-20:00")
+    private ArrayList<String> selectedSlots;
     private double totalPrice;
     private BookingDAO bookingDAO;
 
@@ -38,7 +38,6 @@ public class ConfirmBookingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_booking);
 
-        // 1. Nhận dữ liệu từ BookingActivity
         Intent intent = getIntent();
         currentCourt = (Court) intent.getSerializableExtra("court_object");
         selectedDate = intent.getStringExtra("date");
@@ -79,8 +78,6 @@ public class ConfirmBookingActivity extends AppCompatActivity {
         tvCourtAddress.setText(currentCourt.getAddress());
         tvDate.setText(selectedDate);
 
-        // Hiển thị danh sách giờ đã chọn (Nối chuỗi)
-        // Ví dụ: 19:00 - 20:00, 20:00 - 21:00
         StringBuilder slotsStr = new StringBuilder();
         for (String slot : selectedSlots) {
             if (slotsStr.length() > 0) slotsStr.append(", ");
@@ -101,18 +98,17 @@ public class ConfirmBookingActivity extends AppCompatActivity {
             return;
         }
 
-        // Xác định phương thức thanh toán
         String paymentMethod = "Tiền mặt";
         int selectedId = rgPayment.getCheckedRadioButtonId();
         if (selectedId == R.id.rbWallet) paymentMethod = "Ví điện tử";
         else if (selectedId == R.id.rbCredit) paymentMethod = "Thẻ tín dụng";
 
-        // Lưu từng khung giờ vào Database
-        int userId = 1; // Mặc định
+        int userId = 1;
 
         for (String slotStr : selectedSlots) {
-            // slotStr dạng "19:00 - 20:00", cần cắt chuỗi để lấy start/end
             String[] times = slotStr.split(" - ");
+            if (times.length < 2) continue;
+
             String start = times[0].trim();
             String end = times[1].trim();
 
@@ -124,7 +120,7 @@ public class ConfirmBookingActivity extends AppCompatActivity {
                     selectedDate,
                     start,
                     end,
-                    currentCourt.getPrice(), // Giá từng slot
+                    currentCourt.getPrice(),
                     "CONFIRMED",
                     paymentMethod
             );
@@ -133,9 +129,18 @@ public class ConfirmBookingActivity extends AppCompatActivity {
 
         Toast.makeText(this, "Đặt sân thành công!", Toast.LENGTH_LONG).show();
 
-        // Chuyển về màn hình chính và xóa các màn hình trước đó trong stack
-        Intent intent = new Intent(ConfirmBookingActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        // --- LOGIC CHUYỂN HƯỚNG THÔNG MINH ---
+
+        // 1. Quay về MainActivity trước để xóa hết stack (Booking, Confirm)
+        Intent intentMain = new Intent(this, MainActivity.class);
+        intentMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intentMain);
+
+        // 2. Sau đó mở HistoryActivity đè lên
+        // Như vậy khi user bấm Back ở trang History -> sẽ về Trang chủ (Main)
+        Intent intentHistory = new Intent(this, HistoryActivity.class);
+        startActivity(intentHistory);
+
+        finish();
     }
 }
