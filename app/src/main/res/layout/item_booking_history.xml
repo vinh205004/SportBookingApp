@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvCourtNameHistory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Sân Bóng đá ABC"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:id="@+id/tvStatusHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đã xác nhận"
+                android:textSize="12sp"
+                android:paddingVertical="4dp"
+                android:paddingHorizontal="8dp"
+                android:background="@drawable/bg_badge_blue_light"
+                android:textColor="#007BFF"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@android:drawable/ic_menu_my_calendar"
+                app:tint="#757575"/>
+
+            <TextView
+                android:id="@+id/tvDateHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Ngày: 20/11/2025"
+                android:textSize="14sp"
+                android:textColor="#616161"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@android:drawable/ic_menu_recent_history"
+                app:tint="#757575"/>
+
+            <TextView
+                android:id="@+id/tvTimeHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Giờ: 18:00 - 19:00"
+                android:textSize="14sp"
+                android:textColor="#616161"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvPriceHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Tổng tiền: 150.000 VNĐ"
+            android:textColor="#4CAF50"
+            android:textStyle="bold"/>
+
+        <!-- Nút thao tác -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnCancelBooking"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Hủy đặt"
+                android:textSize="12sp"
+                android:textColor="#F44336"
+                android:backgroundTint="#FFEBEE"
+                android:layout_marginStart="8dp"
+                style="@style/Widget.MaterialComponents.Button.TextButton"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
