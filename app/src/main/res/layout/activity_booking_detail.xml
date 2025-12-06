@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F3F5">
+
+    <!-- HEADER -->
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#FFFFFF"
+        android:elevation="6dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chi tiết đặt sân"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#111827"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <!-- CONTENT SCROLL -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header"
+        android:layout_above="@id/bottomActionBar"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- STATUS BLOCK -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/status_green"
+                android:padding="16dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_marginBottom="14dp">
+
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đã xác nhận"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#047857" />
+
+                <TextView
+                    android:id="@+id/tvBookingCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mã đặt sân: #ABC123"
+                    android:textSize="14sp"
+                    android:textColor="#065F46"
+                    android:layout_marginTop="4dp" />
+
+            </LinearLayout>
+
+            <!-- 3 CARD -->
+            <include layout="@layout/card_field_info" />
+            <include layout="@layout/card_booking_info" />
+            <include layout="@layout/card_user_info" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BOTTOM ACTION BUTTONS -->
+    <LinearLayout
+        android:id="@+id/bottomActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:elevation="8dp"
+        android:padding="12dp">
+
+        <Button
+            android:id="@+id/btnContact"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="📞 Liên hệ sân"
+            android:textColor="#2563EB"
+            android:background="@drawable/btn_outline_blue"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="⛔ Hủy đặt"
+            android:textColor="#DC2626"
+            android:layout_marginLeft="12dp"
+            android:background="@drawable/btn_outline_red"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</RelativeLayout>

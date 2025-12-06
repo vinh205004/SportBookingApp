@@ -52,6 +52,12 @@
         <activity
             android:name=".activity.HistoryActivity"
             android:exported="false" />
+        <!-- 5. Màn profile -->
+        <activity android:name=".activity.ProfileActivity" />
+        <!-- Màn hình Chi tiết booking -->
+        <activity
+            android:name=".activity.BookingDetailActivity"
+            android:exported="false" />
 
     </application>
 

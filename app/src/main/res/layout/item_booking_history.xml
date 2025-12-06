@@ -119,11 +119,22 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btnViewDetails"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="#E3F2FD"
+                android:text="Xem chi tiết"
+                android:textColor="#2196F3"
+                android:textSize="12sp"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <Button
                 android:id="@+id/btnCancelBooking"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_marginStart="8dp"
                 android:backgroundTint="#FFEBEE"
                 android:text="Hủy đặt"
                 android:textColor="#F44336"

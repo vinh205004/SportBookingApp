@@ -77,9 +77,9 @@ public class HistoryActivity extends AppCompatActivity {
                 return true; // Đang ở đây rồi
             } else if (id == R.id.nav_profile) {
                 // Chuyển sang Cá nhân (nếu có)
-                // Intent intent = new Intent(HistoryActivity.this, ProfileActivity.class);
-                // startActivity(intent);
-                // finish();
+                 Intent intent = new Intent(HistoryActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                finish();
                 return false;
             }
             return false;

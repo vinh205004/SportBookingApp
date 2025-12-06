@@ -18,31 +18,27 @@ public class BookingDAO {
     // Logic kiểm tra trùng lịch
     public boolean isTimeSlotBooked(int courtId, String date, String newStart, String newEnd) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
         String sql = "SELECT * FROM " + DatabaseHelper.TABLE_BOOKING +
                 " WHERE " + DatabaseHelper.COL_BOOKING_COURT_ID + " = ?" +
                 " AND " + DatabaseHelper.COL_BOOKING_DATE + " = ?" +
                 " AND " + DatabaseHelper.COL_BOOKING_START + " < ?" +
                 " AND " + DatabaseHelper.COL_BOOKING_END + " > ?" +
                 " AND " + DatabaseHelper.COL_BOOKING_STATUS + " != 'Cancelled'";
-
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(courtId), date, newEnd, newStart});
         boolean isBooked = cursor.getCount() > 0;
         cursor.close();
         return isBooked;
     }
 
+    // Thêm booking mới
     public long addBooking(Booking booking) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(DatabaseHelper.COL_BOOKING_USER_ID, booking.getUserId());
         values.put(DatabaseHelper.COL_BOOKING_COURT_ID, booking.getCourtId());
-
-
         values.put("court_name", booking.getCourtName());
         values.put("court_image", booking.getCourtImage());
-
         values.put(DatabaseHelper.COL_BOOKING_DATE, booking.getDate());
         values.put(DatabaseHelper.COL_BOOKING_START, booking.getStartTime());
         values.put(DatabaseHelper.COL_BOOKING_END, booking.getEndTime());
@@ -53,14 +49,13 @@ public class BookingDAO {
         return db.insert(DatabaseHelper.TABLE_BOOKING, null, values);
     }
 
+    // Lấy danh sách booking theo user
     public List<Booking> getBookingsByUser(int userId) {
         List<Booking> list = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
         String sql = "SELECT * FROM " + DatabaseHelper.TABLE_BOOKING +
                 " WHERE " + DatabaseHelper.COL_BOOKING_USER_ID + " = ?" +
                 " ORDER BY " + DatabaseHelper.COL_BOOKING_ID + " DESC";
-
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId)});
 
         if (cursor.moveToFirst()) {
@@ -82,5 +77,15 @@ public class BookingDAO {
         }
         cursor.close();
         return list;
+    }
+
+    // --- Thêm phương thức cập nhật trạng thái booking ---
+    public int updateBookingStatus(int bookingId, String newStatus) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COL_BOOKING_STATUS, newStatus);
+        return db.update(DatabaseHelper.TABLE_BOOKING, values,
+                DatabaseHelper.COL_BOOKING_ID + " = ?",
+                new String[]{String.valueOf(bookingId)});
     }
 }

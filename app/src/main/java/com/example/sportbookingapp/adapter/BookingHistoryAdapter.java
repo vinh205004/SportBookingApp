@@ -1,6 +1,7 @@
 package com.example.sportbookingapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sportbookingapp.R;
+import com.example.sportbookingapp.activity.BookingDetailActivity;
 import com.example.sportbookingapp.model.Booking;
 
 import java.text.DecimalFormat;
@@ -56,38 +58,35 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
         DecimalFormat formatter = new DecimalFormat("###,###,###");
         holder.tvPrice.setText("Tổng: " + formatter.format(booking.getTotalPrice()) + " VNĐ");
 
-        // 1. Xử lý trạng thái Đơn hàng (CONFIRMED / CANCELLED)
+        // Xử lý trạng thái
         String status = booking.getStatus();
         if ("CANCELLED".equals(status)) {
             holder.tvStatus.setText("Đã hủy");
             holder.tvStatus.setTextColor(Color.RED);
             holder.tvStatus.setBackgroundResource(R.drawable.bg_chip_gray);
             holder.btnCancel.setVisibility(View.GONE);
-
-            // Đã hủy thì ẩn luôn trạng thái thanh toán cho đỡ rối
-            holder.tvPaymentStatus.setVisibility(View.GONE);
         } else {
             holder.tvStatus.setText("Đã xác nhận");
             holder.tvStatus.setTextColor(Color.parseColor("#007BFF"));
             holder.tvStatus.setBackgroundResource(R.drawable.bg_badge_blue_light);
             holder.btnCancel.setVisibility(View.VISIBLE);
-            holder.tvPaymentStatus.setVisibility(View.VISIBLE);
-
-            // 2. Xử lý trạng thái Thanh toán (Dựa trên Payment Method)
-            // Trong ConfirmBookingActivity chúng ta lưu là "Tiền mặt", "Ví điện tử", ...
-            String paymentMethod = booking.getPaymentMethod();
-
-            if (paymentMethod != null && paymentMethod.equals("Tiền mặt")) {
-                holder.tvPaymentStatus.setText("Chưa thanh toán (Thu tại sân)");
-                holder.tvPaymentStatus.setTextColor(Color.parseColor("#FF9800")); // Màu Cam
-            } else {
-                // Ví điện tử / Thẻ tín dụng -> Coi như đã thanh toán
-                holder.tvPaymentStatus.setText("Đã thanh toán (" + paymentMethod + ")");
-                holder.tvPaymentStatus.setTextColor(Color.parseColor("#4CAF50")); // Màu Xanh lá
-            }
         }
 
+        // Nút Hủy
         holder.btnCancel.setOnClickListener(v -> listener.onCancelClick(booking));
+
+        // Nút Xem chi tiết
+        holder.btnViewDetails.setOnClickListener(v -> {
+            Intent intent = new Intent(context, BookingDetailActivity.class);
+            intent.putExtra("bookingId", booking.getId());
+            intent.putExtra("courtName", booking.getCourtName());
+            intent.putExtra("date", booking.getDate());
+            intent.putExtra("startTime", booking.getStartTime());
+            intent.putExtra("endTime", booking.getEndTime());
+            intent.putExtra("status", booking.getStatus());
+            context.startActivity(intent);
+        });
+
     }
 
     @Override
@@ -96,8 +95,8 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvStatus, tvDate, tvTime, tvPrice, tvPaymentStatus; // Thêm tvPaymentStatus
-        Button btnCancel;
+        TextView tvName, tvStatus, tvDate, tvTime, tvPrice;
+        Button btnCancel, btnViewDetails;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,8 +105,8 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
             tvDate = itemView.findViewById(R.id.tvDateHistory);
             tvTime = itemView.findViewById(R.id.tvTimeHistory);
             tvPrice = itemView.findViewById(R.id.tvPriceHistory);
-            tvPaymentStatus = itemView.findViewById(R.id.tvPaymentStatus); // Ánh xạ view mới
             btnCancel = itemView.findViewById(R.id.btnCancelBooking);
+            btnViewDetails = itemView.findViewById(R.id.btnViewDetails);
         }
     }
 }

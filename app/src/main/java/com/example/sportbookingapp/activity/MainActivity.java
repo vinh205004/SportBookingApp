@@ -387,11 +387,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 startActivity(intent);
                 return true;
             } else if (id == R.id.nav_profile) {
-                // Chuyển sang màn hình Cá nhân (nếu có)
-                // Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                // startActivity(intent);
-                return false; // Tạm thời chưa có nên trả về false
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                return true;
             }
+
             return false;
         });
     }
