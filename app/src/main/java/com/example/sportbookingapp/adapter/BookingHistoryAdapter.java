@@ -80,12 +80,18 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
             Intent intent = new Intent(context, BookingDetailActivity.class);
             intent.putExtra("bookingId", booking.getId());
             intent.putExtra("courtName", booking.getCourtName());
+            intent.putExtra("totalPrice", booking.getTotalPrice());
+
+            // ⭐ Thêm địa chỉ sân
+            intent.putExtra("courtAddress", booking.getCourtObject() != null ? booking.getCourtObject().getAddress() : "");
+
             intent.putExtra("date", booking.getDate());
             intent.putExtra("startTime", booking.getStartTime());
             intent.putExtra("endTime", booking.getEndTime());
             intent.putExtra("status", booking.getStatus());
             context.startActivity(intent);
         });
+
 
     }
 

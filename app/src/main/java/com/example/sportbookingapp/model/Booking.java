@@ -79,4 +79,16 @@ public class Booking implements Serializable {
 
     public String getPaymentMethod() { return paymentMethod; }
     public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
+    // Trong Booking.java, thêm:
+    private Court courtObject;  // ⭐ mới, không ảnh hưởng DB
+
+    // Getter & Setter
+    public Court getCourtObject() {
+        return courtObject;
+    }
+
+    public void setCourtObject(Court courtObject) {
+        this.courtObject = courtObject;
+    }
+
 }

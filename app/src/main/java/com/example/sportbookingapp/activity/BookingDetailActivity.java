@@ -27,6 +27,10 @@ public class BookingDetailActivity extends AppCompatActivity {
     private String status;
     private String startTime, endTime;
     private String courtName, date;
+    private TextView tvPrice; // thêm ở phần khai báo
+    private TextView  tvFieldLocation;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,9 @@ public class BookingDetailActivity extends AppCompatActivity {
         tvBookingDate = findViewById(R.id.tvBookingDate);
         tvTimeRange = findViewById(R.id.tvTimeRange);
         tvDuration = findViewById(R.id.tvDuration);
+        tvPrice = findViewById(R.id.tvPrice);
+
+        tvFieldLocation = findViewById(R.id.tvFieldLocation);
         tvFieldName = findViewById(R.id.tvFieldName);
         tvFieldPhone = findViewById(R.id.tvFieldPhone);
         tvUserName = findViewById(R.id.tvUserName);
@@ -62,6 +69,14 @@ public class BookingDetailActivity extends AppCompatActivity {
             tvTimeRange.setText("Giờ: " + startTime + " - " + endTime);
             tvDuration.setText("Thời lượng: " + calculateDuration(startTime, endTime));
             tvStatus.setText(statusDisplay(status));
+            // Giá tiền
+            double totalPrice = intent.getDoubleExtra("totalPrice", 0);
+            tvPrice.setText("Giá: " + String.format("%,.0f", totalPrice) + " VNĐ");
+
+// Địa chỉ sân
+            String courtAddress = intent.getStringExtra("courtAddress");
+            tvFieldLocation.setText(courtAddress != null && !courtAddress.isEmpty() ? courtAddress : "Địa chỉ chưa có");
+
 
             // Số điện thoại sân giả lập
             tvFieldPhone.setText("0123456789");

@@ -86,6 +86,26 @@
                 android:layout_marginStart="6dp"
                 android:text="Thời lượng: 1 giờ" />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="6dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_price"
+                app:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="Giá: 0 VNĐ" />
+        </LinearLayout>
 
     </LinearLayout>
 

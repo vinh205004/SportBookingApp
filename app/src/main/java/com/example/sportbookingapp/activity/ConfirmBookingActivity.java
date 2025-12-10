@@ -124,6 +124,7 @@ public class ConfirmBookingActivity extends AppCompatActivity {
                     "CONFIRMED",
                     paymentMethod
             );
+            booking.setCourtObject(currentCourt);
             bookingDAO.addBooking(booking);
         }
 

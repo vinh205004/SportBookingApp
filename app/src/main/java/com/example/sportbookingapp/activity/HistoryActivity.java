@@ -25,6 +25,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView; // Th�
 
 import java.util.ArrayList;
 import java.util.List;
+import com.example.sportbookingapp.model.Court;
+import com.example.sportbookingapp.database.CourtDAO;
+import com.example.sportbookingapp.model.Court;
+
+
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -40,11 +45,14 @@ public class HistoryActivity extends AppCompatActivity {
     private List<Booking> displayList;
     private int userId = 1;
     private boolean isShowingUpcoming = true;
+    private CourtDAO courtDAO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        courtDAO = new CourtDAO(this);
 
         initViews();
         bookingDAO = new BookingDAO(this);
@@ -76,14 +84,15 @@ public class HistoryActivity extends AppCompatActivity {
             } else if (id == R.id.nav_booking) {
                 return true; // Đang ở đây rồi
             } else if (id == R.id.nav_profile) {
-                // Chuyển sang Cá nhân (nếu có)
-                 Intent intent = new Intent(HistoryActivity.this, ProfileActivity.class);
+                Intent intent = new Intent(HistoryActivity.this, ProfileActivity.class);
                 startActivity(intent);
                 finish();
-                return false;
+                return true;
             }
+
             return false;
         });
+
     }
 
     private void initViews() {
@@ -142,8 +151,17 @@ public class HistoryActivity extends AppCompatActivity {
 
     private void loadData() {
         allBookings = bookingDAO.getBookingsByUser(userId);
+
+        // --- Gán courtObject cho từng booking ---
+        for (Booking booking : allBookings) {
+            Court court = courtDAO.getCourtById(booking.getCourtId());
+            booking.setCourtObject(court);
+        }
+
         filterData();
     }
+
+
 
     private void filterData() {
         displayList.clear();
@@ -185,4 +203,10 @@ public class HistoryActivity extends AppCompatActivity {
             loadData();
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNavigationView.setSelectedItemId(R.id.nav_booking);
+    }
+
 }

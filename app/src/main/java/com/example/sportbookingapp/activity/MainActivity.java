@@ -410,4 +410,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         if (myLocationOverlay != null) myLocationOverlay.disableMyLocation();
         if (locationManager != null) locationManager.removeUpdates(this);
     }
+
+
 }
