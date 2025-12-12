@@ -1,90 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="12dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="14dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvFieldName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sân bóng Minh Khai"
-            android:textStyle="bold"
-            android:textSize="18sp" />
+        <!-- HÌNH ẢNH SÂN (MỚI THÊM) -->
+        <ImageView
+            android:id="@+id/imgField"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            tools:srcCompat="@tools:sample/backgrounds/scenic"/>
 
-        <!-- Vị trí -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="8dp">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_location"
-                app:tint="@color/black" />
+            android:orientation="vertical"
+            android:padding="14dp">
 
             <TextView
-                android:id="@+id/tvFieldLocation"
+                android:id="@+id/tvFieldName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="298 Cầu Diễn, Minh Khai, Hà Nội" />
-        </LinearLayout>
+                tools:text="Sân bóng Minh Khai"
+                android:textStyle="bold"
+                android:textSize="18sp" />
 
-        <!-- Số người đá -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="6dp">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_person"
-                app:tint="@color/black" />
-
-            <TextView
-                android:id="@+id/tvFieldPlayers"
-                android:layout_width="wrap_content"
+            <!-- Vị trí -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="Sân bóng đá 7 người" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="8dp">
 
-        <!-- Số điện thoại -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="6dp">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_location"
+                    app:tint="@color/black" />
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_call"
-                app:tint="@color/black" />
+                <TextView
+                    android:id="@+id/tvFieldLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    tools:text="298 Cầu Diễn, Minh Khai, Hà Nội" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvFieldPhone"
-                android:layout_width="wrap_content"
+            <!-- Số người đá -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="0123 456 789" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="6dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_person"
+                    app:tint="@color/black" />
+
+                <TextView
+                    android:id="@+id/tvFieldPlayers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    tools:text="Sân bóng đá 7 người" />
+            </LinearLayout>
+
+            <!-- Số điện thoại -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="6dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_call"
+                    app:tint="@color/black" />
+
+                <TextView
+                    android:id="@+id/tvFieldPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    tools:text="0123 456 789" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

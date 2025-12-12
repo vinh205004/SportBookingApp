@@ -23,16 +23,11 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
 
     private Context context;
     private List<Booking> bookingList;
-    private OnActionClickListener listener;
 
-    public interface OnActionClickListener {
-        void onCancelClick(Booking booking);
-    }
-
-    public BookingHistoryAdapter(Context context, List<Booking> bookingList, OnActionClickListener listener) {
+    // Constructor đơn giản hóa
+    public BookingHistoryAdapter(Context context, List<Booking> bookingList) {
         this.context = context;
         this.bookingList = bookingList;
-        this.listener = listener;
     }
 
     public void updateList(List<Booking> newList) {
@@ -64,35 +59,38 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
             holder.tvStatus.setText("Đã hủy");
             holder.tvStatus.setTextColor(Color.RED);
             holder.tvStatus.setBackgroundResource(R.drawable.bg_chip_gray);
-            holder.btnCancel.setVisibility(View.GONE);
+            if(holder.btnCancel != null) holder.btnCancel.setVisibility(View.GONE);
         } else {
             holder.tvStatus.setText("Đã xác nhận");
             holder.tvStatus.setTextColor(Color.parseColor("#007BFF"));
             holder.tvStatus.setBackgroundResource(R.drawable.bg_badge_blue_light);
-            holder.btnCancel.setVisibility(View.VISIBLE);
+            if(holder.btnCancel != null) holder.btnCancel.setVisibility(View.GONE);
         }
 
-        // Nút Hủy
-        holder.btnCancel.setOnClickListener(v -> listener.onCancelClick(booking));
-
-        // Nút Xem chi tiết
-        holder.btnViewDetails.setOnClickListener(v -> {
+        // Logic mở chi tiết (Dùng chung cho cả nút Xem và click item)
+        View.OnClickListener detailClickListener = v -> {
             Intent intent = new Intent(context, BookingDetailActivity.class);
             intent.putExtra("bookingId", booking.getId());
             intent.putExtra("courtName", booking.getCourtName());
             intent.putExtra("totalPrice", booking.getTotalPrice());
-
-            // ⭐ Thêm địa chỉ sân
-            intent.putExtra("courtAddress", booking.getCourtObject() != null ? booking.getCourtObject().getAddress() : "");
-
+            // Truyền thêm tọa độ (nếu có) để chỉ đường chính xác
+            if (booking.getCourtObject() != null) {
+                intent.putExtra("courtAddress", booking.getCourtObject().getAddress());
+                intent.putExtra("courtLat", booking.getCourtObject().getLat());
+                intent.putExtra("courtLng", booking.getCourtObject().getLng());
+            }
             intent.putExtra("date", booking.getDate());
             intent.putExtra("startTime", booking.getStartTime());
             intent.putExtra("endTime", booking.getEndTime());
             intent.putExtra("status", booking.getStatus());
+            intent.putExtra("paymentMethod", booking.getPaymentMethod());
+            intent.putExtra("courtImage", booking.getCourtImage());
+
             context.startActivity(intent);
-        });
+        };
 
-
+        holder.btnViewDetails.setOnClickListener(detailClickListener);
+        holder.itemView.setOnClickListener(detailClickListener);
     }
 
     @Override

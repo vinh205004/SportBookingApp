@@ -4,8 +4,12 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,23 +18,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sportbookingapp.R;
 import com.example.sportbookingapp.database.DatabaseHelper;
+import java.util.Locale;
 
 public class BookingDetailActivity extends AppCompatActivity {
 
     private TextView tvStatus, tvBookingCode;
-    private TextView tvBookingDate, tvTimeRange, tvDuration;
+    private TextView tvBookingDate, tvTimeRange, tvDuration, tvPaymentMethod;
     private TextView tvFieldName, tvFieldPhone;
     private TextView tvUserName, tvUserPhone;
     private Button btnContact, btnCancel;
 
     private int bookingId;
     private String status;
-    private String startTime, endTime;
     private String courtName, date;
-    private TextView tvPrice; // thêm ở phần khai báo
-    private TextView  tvFieldLocation;
-
-
+    private TextView tvPrice;
+    private TextView tvFieldLocation;
+    private ImageView imgCourt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,20 +41,7 @@ public class BookingDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_booking_detail);
 
         // --- Ánh xạ views ---
-        tvStatus = findViewById(R.id.tvStatus);
-        tvBookingCode = findViewById(R.id.tvBookingCode);
-        tvBookingDate = findViewById(R.id.tvBookingDate);
-        tvTimeRange = findViewById(R.id.tvTimeRange);
-        tvDuration = findViewById(R.id.tvDuration);
-        tvPrice = findViewById(R.id.tvPrice);
-
-        tvFieldLocation = findViewById(R.id.tvFieldLocation);
-        tvFieldName = findViewById(R.id.tvFieldName);
-        tvFieldPhone = findViewById(R.id.tvFieldPhone);
-        tvUserName = findViewById(R.id.tvUserName);
-        tvUserPhone = findViewById(R.id.tvUserPhone);
-        btnContact = findViewById(R.id.btnContact);
-        btnCancel = findViewById(R.id.btnCancel);
+        initViews();
 
         // --- Lấy dữ liệu từ Intent ---
         Intent intent = getIntent();
@@ -59,29 +49,34 @@ public class BookingDetailActivity extends AppCompatActivity {
             bookingId = intent.getIntExtra("bookingId", -1);
             courtName = intent.getStringExtra("courtName");
             date = intent.getStringExtra("date");
-            startTime = intent.getStringExtra("startTime");
-            endTime = intent.getStringExtra("endTime");
             status = intent.getStringExtra("status");
 
-            tvBookingCode.setText("Mã đặt sân: #" + bookingId);
+            tvBookingCode.setText(getString(R.string.booking_code_prefix) + bookingId);
             tvFieldName.setText(courtName);
             tvBookingDate.setText("Ngày: " + date);
-            tvTimeRange.setText("Giờ: " + startTime + " - " + endTime);
-            tvDuration.setText("Thời lượng: " + calculateDuration(startTime, endTime));
-            tvStatus.setText(statusDisplay(status));
-            // Giá tiền
+            tvTimeRange.setText("Giờ: " + intent.getStringExtra("startTime") + " - " + intent.getStringExtra("endTime"));
+            tvDuration.setText("Thời lượng: " + calculateDuration(intent.getStringExtra("startTime"), intent.getStringExtra("endTime")));
+            
+            updateStatusDisplay(status);
+            
             double totalPrice = intent.getDoubleExtra("totalPrice", 0);
             tvPrice.setText("Giá: " + String.format("%,.0f", totalPrice) + " VNĐ");
 
-// Địa chỉ sân
+            String paymentMethod = intent.getStringExtra("paymentMethod");
+            tvPaymentMethod.setText(paymentMethod);
+            
+            String courtImage = intent.getStringExtra("courtImage");
+            int resId = getResources().getIdentifier(courtImage, "drawable", getPackageName());
+            if (resId != 0) {
+                imgCourt.setImageResource(resId);
+            } else {
+                imgCourt.setImageResource(R.drawable.ic_launcher_background);
+            }
+
             String courtAddress = intent.getStringExtra("courtAddress");
             tvFieldLocation.setText(courtAddress != null && !courtAddress.isEmpty() ? courtAddress : "Địa chỉ chưa có");
 
-
-            // Số điện thoại sân giả lập
             tvFieldPhone.setText("0123456789");
-
-            // Thông tin user tĩnh
             tvUserName.setText("Nguyễn Văn A");
             tvUserPhone.setText("0987654321");
 
@@ -90,23 +85,38 @@ public class BookingDetailActivity extends AppCompatActivity {
             finish();
         }
 
-        // --- Nút quay về HistoryActivity ---
-        findViewById(R.id.btnBack).setOnClickListener(v -> {
-            Intent backIntent = new Intent(BookingDetailActivity.this, HistoryActivity.class);
-            startActivity(backIntent);
-            finish();
-        });
+        setupEvents();
+    }
 
-        // --- Nút liên hệ sân ---
+    private void initViews() {
+        tvStatus = findViewById(R.id.tvStatus);
+        tvBookingCode = findViewById(R.id.tvBookingCode);
+        tvBookingDate = findViewById(R.id.tvBookingDate);
+        tvTimeRange = findViewById(R.id.tvTimeRange);
+        tvDuration = findViewById(R.id.tvDuration);
+        tvPrice = findViewById(R.id.tvPrice);
+        tvPaymentMethod = findViewById(R.id.tvPaymentMethod);
+        imgCourt = findViewById(R.id.imgField);
+        tvFieldLocation = findViewById(R.id.tvFieldLocation);
+        tvFieldName = findViewById(R.id.tvFieldName);
+        tvFieldPhone = findViewById(R.id.tvFieldPhone);
+        tvUserName = findViewById(R.id.tvUserName);
+        tvUserPhone = findViewById(R.id.tvUserPhone);
+        btnContact = findViewById(R.id.btnContact);
+        btnCancel = findViewById(R.id.btnCancel);
+    }
+
+    private void setupEvents() {
+        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+
         btnContact.setOnClickListener(v -> {
             String phone = tvFieldPhone.getText().toString();
-            Intent callIntent = new Intent(Intent.ACTION_DIAL, android.net.Uri.parse("tel:" + phone));
+            Intent callIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
             startActivity(callIntent);
         });
 
-        // --- Nút hủy booking ---
         btnCancel.setOnClickListener(v -> {
-            if (!status.equals("CANCELLED")) {
+            if (!"CANCELLED".equals(status)) {
                 new AlertDialog.Builder(this)
                         .setTitle("Xác nhận hủy")
                         .setMessage("Bạn có chắc chắn muốn hủy đặt sân này không?")
@@ -137,12 +147,28 @@ public class BookingDetailActivity extends AppCompatActivity {
         }
     }
 
-    private String statusDisplay(String status) {
+    private void updateStatusDisplay(String status) {
+        View statusContainer = findViewById(R.id.status_container);
         switch (status) {
-            case "CONFIRMED": return "Đã xác nhận";
-            case "PENDING": return "Đang chờ";
-            case "CANCELLED": return "Đã hủy";
-            default: return status;
+            case "CONFIRMED": 
+                tvStatus.setText("Đã xác nhận");
+                tvStatus.setTextColor(Color.parseColor("#047857"));
+                statusContainer.setBackgroundResource(R.drawable.status_green);
+                break;
+            case "PENDING": 
+                tvStatus.setText("Đang chờ");
+                tvStatus.setTextColor(Color.parseColor("#D97706"));
+                statusContainer.setBackgroundResource(R.drawable.status_yellow);
+                break;
+            case "CANCELLED": 
+                tvStatus.setText("Đã hủy");
+                tvStatus.setTextColor(Color.parseColor("#DC2626"));
+                statusContainer.setBackgroundResource(R.drawable.status_red);
+                btnCancel.setEnabled(false);
+                btnCancel.setAlpha(0.5f);
+                break;
+            default: 
+                tvStatus.setText(status);
         }
     }
 
@@ -159,8 +185,7 @@ public class BookingDetailActivity extends AppCompatActivity {
         if (rows > 0) {
             Toast.makeText(this, "Hủy đặt sân thành công", Toast.LENGTH_SHORT).show();
             status = "CANCELLED";
-            tvStatus.setText("Đã hủy");
-            btnCancel.setEnabled(false);
+            updateStatusDisplay(status);
         } else {
             Toast.makeText(this, "Hủy đặt sân thất bại", Toast.LENGTH_SHORT).show();
         }

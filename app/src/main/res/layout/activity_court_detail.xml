@@ -31,7 +31,8 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_launcher_background"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                    tools:srcCompat="@tools:sample/backgrounds/scenic"
+                    android:contentDescription="Ảnh sân" />
 
                 <!-- Overlay gradient để nút bấm rõ hơn -->
                 <View
@@ -50,7 +51,8 @@
                     android:elevation="4dp"
                     android:src="@android:drawable/ic_menu_revert"
                     app:tint="#333333"
-                    tools:ignore="SpeakableTextPresentCheck" />
+                    tools:ignore="SpeakableTextPresentCheck"
+                    android:contentDescription="Quay lại" />
 
                 <ImageButton
                     android:id="@+id/btnFavorite"
@@ -63,7 +65,8 @@
                     android:elevation="4dp"
                     android:src="@android:drawable/btn_star_big_off"
                     app:tint="#333333"
-                    tools:ignore="SpeakableTextPresentCheck" />
+                    tools:ignore="SpeakableTextPresentCheck"
+                    android:contentDescription="Yêu thích" />
             </RelativeLayout>
 
             <!-- 2. THẺ THÔNG TIN CHÍNH (Nổi lên trên ảnh) -->
@@ -104,7 +107,8 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@android:drawable/ic_dialog_map"
-                            app:tint="#757575" />
+                            app:tint="#757575"
+                            android:contentDescription="Icon địa chỉ" />
 
                         <TextView
                             android:id="@+id/tvCourtAddressDetail"
@@ -116,6 +120,42 @@
                             android:textSize="14sp"
                             android:ellipsize="end"
                             android:maxLines="1"/>
+                    </LinearLayout>
+
+                    <!-- MỚI: Chỉ đường & Khoảng cách -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnDirections"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:backgroundTint="#4CAF50"
+                            android:text="@string/btn_directions"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp"
+                            android:paddingHorizontal="12dp"
+                            android:drawableLeft="@android:drawable/ic_menu_directions"
+                            android:drawableTint="#FFFFFF"
+                            android:drawablePadding="6dp"/>
+                        
+                        <!-- Hiển thị khoảng cách ở đây -->
+                        <TextView
+                            android:id="@+id/tvDistance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="12dp"
+                            android:text="Cách bạn: 2.5 km"
+                            android:textColor="#757575"
+                            android:textStyle="italic"
+                            android:textSize="14sp"
+                            android:visibility="gone"
+                            tools:visibility="visible"/>
+
                     </LinearLayout>
 
                     <!-- Rating & Loại sân -->
@@ -138,7 +178,8 @@
                                 android:layout_width="14dp"
                                 android:layout_height="14dp"
                                 android:src="@android:drawable/star_on"
-                                app:tint="#FFFFFF"/>
+                                app:tint="#FFFFFF"
+                                android:contentDescription="Icon sao" />
 
                             <TextView
                                 android:id="@+id/tvRatingDetail"
@@ -203,7 +244,8 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_menu_compass"
-                            app:tint="#007BFF"/>
+                            app:tint="#007BFF"
+                            android:contentDescription="Icon giá" />
 
                         <TextView
                             android:id="@+id/tvPriceDetail"
@@ -237,7 +279,8 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_menu_recent_history"
-                            app:tint="#4CAF50"/>
+                            app:tint="#4CAF50"
+                            android:contentDescription="Icon giờ" />
 
                         <TextView
                             android:id="@+id/tvOpenTimeDetail"
@@ -271,7 +314,8 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@android:drawable/stat_sys_data_bluetooth"
-                            app:tint="#FF9800"/>
+                            app:tint="#FF9800"
+                            android:contentDescription="Icon wifi" />
 
                         <TextView
                             android:layout_width="wrap_content"

@@ -10,6 +10,11 @@
     <!-- Vị trí: Để hiển thị vị trí người dùng trên bản đồ -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    
+    <!-- Truy vấn các app chỉ đường (Google Maps, etc) -->
+    <queries>
+        <package android:name="com.google.android.apps.maps" />
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -25,7 +30,8 @@
         <!-- 1. Màn hình chính -->
         <activity
             android:name=".activity.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -42,19 +48,13 @@
             android:name=".activity.BookingActivity"
             android:exported="false" />
 
-        <!-- 4. Màn hình Xác nhận Đặt sân (MỚI THÊM) -->
+        <!-- 4. Màn hình Xác nhận Đặt sân -->
         <activity
             android:name=".activity.ConfirmBookingActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
 
-        <!-- 5. Màn hình Lịch sử (MỚI THÊM) -->
-        <activity
-            android:name=".activity.HistoryActivity"
-            android:exported="false" />
-        <!-- 5. Màn profile -->
-        <activity android:name=".activity.ProfileActivity" />
-        <!-- Màn hình Chi tiết booking -->
+        <!-- 5. Màn hình Chi tiết booking (nếu còn dùng) -->
         <activity
             android:name=".activity.BookingDetailActivity"
             android:exported="false" />

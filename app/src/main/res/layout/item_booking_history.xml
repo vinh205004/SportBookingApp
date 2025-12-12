@@ -54,7 +54,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@android:drawable/ic_menu_my_calendar"
+                android:src="@drawable/ic_calendar"
                 app:tint="#757575"/>
 
             <TextView
@@ -76,7 +76,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@android:drawable/ic_menu_recent_history"
+                android:src="@drawable/ic_clock"
                 app:tint="#757575"/>
 
             <TextView
@@ -88,18 +88,6 @@
                 android:textSize="14sp"
                 android:textColor="#616161"/>
         </LinearLayout>
-
-        <!-- MỚI THÊM: Trạng thái thanh toán -->
-        <TextView
-            android:id="@+id/tvPaymentStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginStart="24dp"
-            android:text="Chưa thanh toán"
-            android:textSize="13sp"
-            android:textStyle="italic"
-            android:textColor="#FF9800"/>
 
         <TextView
             android:id="@+id/tvPriceHistory"
@@ -118,28 +106,39 @@
             android:gravity="end"
             android:orientation="horizontal">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnViewDetails"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:backgroundTint="#E3F2FD"
                 android:text="Xem chi tiết"
                 android:textColor="#2196F3"
+                app:strokeColor="#2196F3"
                 android:textSize="12sp"
-                tools:ignore="TouchTargetSizeCheck" />
+                app:icon="@drawable/ic_hourglass"
+                app:iconTint="#2196F3"
+                app:iconSize="16dp"
+                android:minHeight="40dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancelBooking"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:backgroundTint="#FFEBEE"
-                android:text="Hủy đặt"
-                android:textColor="#F44336"
+                android:layout_height="wrap_content"
+                android:text="Hủy"
+                android:textColor="@color/red_danger"
                 android:textSize="12sp"
-                tools:ignore="TouchTargetSizeCheck" />
+                app:icon="@android:drawable/ic_menu_close_clear_cancel"
+                app:iconTint="@color/red_danger"
+                app:iconSize="16dp"
+                android:minHeight="40dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                />
         </LinearLayout>
 
     </LinearLayout>

@@ -1,3 +1,79 @@
 <resources>
-    <string name="app_name">SportBookingApp</string>
+    <string name="app_name" translatable="false">SportBookingApp</string>
+    <string name="title_explore">Khám phá</string>
+    <string name="title_booking">Lịch đặt</string>
+    <string name="title_profile">Cá nhân</string>
+
+    <!-- Main Activity -->
+    <string name="search_hint">Tìm sân theo tên, khu vực...</string>
+    <string name="filter_distance_desc">Lọc khoảng cách</string>
+    <string name="chip_all">Tất cả</string>
+    <string name="chip_football">Bóng đá</string>
+    <string name="chip_badminton">Cầu lông</string>
+    <string name="chip_tennis">Tennis</string>
+    <string name="chip_basketball">Bóng rổ</string>
+    <string name="gps_error">Không thể truy cập GPS</string>
+    <string name="permission_location_rationale">Cần quyền vị trí để tìm sân gần bạn</string>
+    <string name="fetching_location">Đang lấy vị trí...</string>
+    <string name="filtering">Đang lọc...</string>
+    <string name="marker_snippet_format">%,.0f đ/h\n(Bấm lần nữa để xem chi tiết)</string>
+
+    <!-- Cards -->
+    <string name="user_info_title">Thông tin người đặt</string>
+    <string name="booking_info_title">Thông tin đặt sân</string>
+    <string name="court_label">Sân:</string>
+    <string name="address_label">Địa chỉ:</string>
+    <string name="date_label">Ngày:</string>
+    <string name="time_label">Giờ:</string>
+    <string name="total_price_label">Tổng tiền:</string>
+    <string name="user_name_label">Tên của bạn</string>
+    <string name="phone_label">Số điện thoại</string>
+    <string name="payment_method_title">Phương thức thanh toán</string>
+    <string name="payment_cash">Thanh toán khi đến sân</string>
+    <string name="payment_wallet">Ví điện tử (giả lập)</string>
+    <string name="payment_credit">Thẻ tín dụng (giả lập)</string>
+    <string name="confirm_booking_title">Xác nhận đặt sân</string>
+    <string name="booking_detail_title">Chi tiết đặt sân</string>
+    <string name="btn_confirm_booking">Xác nhận đặt sân</string>
+
+    <!-- Booking Activity -->
+    <string name="booking_title">Chọn ngày &amp; Giờ</string>
+    <string name="available_slots">Khung giờ có sẵn</string>
+    <string name="total_amount_label">Tổng tiền tạm tính:</string>
+    <string name="total_amount_default">0 đ</string>
+    <string name="btn_continue">Tiếp tục</string>
+    <string name="msg_select_slot">Vui lòng chọn khung giờ!</string>
+
+    <!-- History Activity -->
+    <string name="back_button_desc">Quay lại</string>
+    <string name="history_title">Lịch đặt của tôi</string>
+    <string name="tab_upcoming">Sắp tới</string>
+    <string name="tab_history">Đã hoàn thành/Hủy</string>
+
+    <!-- Profile Activity -->
+    <string name="profile_title">Thông tin cá nhân</string>
+    <string name="profile_name_placeholder">Nguyễn Văn A</string>
+    <string name="profile_phone_placeholder">0987654321</string>
+    <string name="profile_email_placeholder">nguyenvana@example.com</string>
+
+    <!-- Confirm Booking Activity -->
+    <string name="msg_missing_info">Vui lòng nhập đủ thông tin</string>
+    <string name="msg_booking_success">Đặt sân thành công!</string>
+    <string name="msg_data_error">Lỗi dữ liệu</string>
+    <string name="promo_code_title">Mã giảm giá</string>
+    <string name="promo_code_hint">Nhập mã khuyến mãi</string>
+    <string name="btn_apply">Áp dụng</string>
+    <string name="msg_promo_success">Áp dụng mã thành công!</string>
+    <string name="msg_promo_invalid">Mã không hợp lệ</string>
+    <string name="discount_label">Giảm giá:</string>
+
+    <!-- Court Detail Activity -->
+    <string name="btn_directions">Chỉ đường</string>
+
+    <!-- Booking Detail Activity -->
+    <string name="booking_code_prefix">Mã đặt sân: #</string>
+    <string name="payment_method_label">Phương thức thanh toán:</string>
+    <string name="btn_contact_court">Liên hệ sân</string>
+    <string name="btn_cancel_booking">Hủy đặt</string>
+
 </resources>

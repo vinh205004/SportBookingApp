@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F8F9FA">
@@ -20,14 +21,15 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@android:drawable/ic_menu_revert"
-            app:tint="#333333" />
+            app:tint="#333333"
+            android:contentDescription="@string/back_button_desc"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Chọn ngày &amp; Giờ"
+            android:text="@string/booking_title"
             android:textColor="#333333"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -71,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Khung giờ có sẵn"
+                android:text="@string/available_slots"
                 android:textColor="#333333"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -108,7 +110,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tổng tiền tạm tính:"
+                android:text="@string/total_amount_label"
                 android:textSize="14sp"/>
 
             <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
@@ -117,7 +119,7 @@
                 android:id="@+id/tvTotalAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0 đ"
+                android:text="@string/total_amount_default"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#007BFF"/>
@@ -129,7 +131,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="12dp"
             android:backgroundTint="#007BFF"
-            android:text="Tiếp tục"
+            android:text="@string/btn_continue"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
     </LinearLayout>
