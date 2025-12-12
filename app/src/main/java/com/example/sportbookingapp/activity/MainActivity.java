@@ -74,14 +74,13 @@ public class MainActivity extends AppCompatActivity {
             // 1. Chuyển sang Fragment Lịch sử
             loadFragment(new HistoryFragment());
 
-            // 2. Cập nhật icon sáng ở menu đáy cho đúng
+            // 2. Cập nhật icon sáng ở menu
             if (bottomNav != null) {
                 bottomNav.setSelectedItemId(R.id.nav_booking);
             }
         }
     }
 
-    // Hàm phụ để thay thế Fragment
     private void loadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)

@@ -82,8 +82,7 @@ public class HomeFragment extends Fragment implements LocationListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // 1. Cấu hình OSM (Bắt buộc)
-        // Lưu ý: Dùng requireContext() thay vì getApplicationContext()
+        // 1. Cấu hình OSM
         Configuration.getInstance().load(requireContext(),
                 PreferenceManager.getDefaultSharedPreferences(requireContext()));
         Configuration.getInstance().setUserAgentValue(requireContext().getPackageName());
@@ -116,7 +115,7 @@ public class HomeFragment extends Fragment implements LocationListener {
         // 6. Xử lý quyền vị trí & Lấy GPS
         checkAndRequestLocationPermission();
 
-        // 7. Vẽ Map lần đầu
+        // 7. Lọc
         applyFilters();
 
         // 8. Các sự kiện (Search, Chip, FAB...)
@@ -126,7 +125,6 @@ public class HomeFragment extends Fragment implements LocationListener {
     }
 
     private void initViews(View view) {
-        // Lưu ý: Phải dùng view.findViewById
         mapView = view.findViewById(R.id.osmMap);
         fabList = view.findViewById(R.id.fab_list);
         edtSearch = view.findViewById(R.id.edt_search);
@@ -146,7 +144,6 @@ public class HomeFragment extends Fragment implements LocationListener {
         // Overlay hiển thị vị trí của tôi
         myLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(requireContext()), mapView);
         myLocationOverlay.enableMyLocation();
-        // myLocationOverlay.enableFollowLocation(); // Tắt dòng này nếu muốn tự do di chuyển map
         mapView.getOverlays().add(myLocationOverlay);
     }
 
@@ -155,7 +152,6 @@ public class HomeFragment extends Fragment implements LocationListener {
     private void checkAndRequestLocationPermission() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            // Fragment có hàm requestPermissions riêng, không dùng ActivityCompat
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     PERMISSION_REQUEST_CODE);
         } else {
@@ -324,7 +320,6 @@ public class HomeFragment extends Fragment implements LocationListener {
     }
 
     private void goToDetail(Court court) {
-        // Sử dụng requireContext() cho Intent
         Intent intent = new Intent(requireContext(), CourtDetailActivity.class);
         intent.putExtra("court_object", court); //
         startActivity(intent);
@@ -376,7 +371,6 @@ public class HomeFragment extends Fragment implements LocationListener {
             }
         });
 
-        // ĐÃ XÓA logic BottomNavigationView ở đây
     }
 
     @Override
