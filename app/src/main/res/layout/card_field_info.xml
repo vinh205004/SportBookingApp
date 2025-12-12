@@ -43,7 +43,6 @@
                 android:text="298 Cầu Diễn, Minh Khai, Hà Nội" />
         </LinearLayout>
 
-        <!-- Số người đá -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,11 +57,11 @@
                 app:tint="@color/black" />
 
             <TextView
-                android:id="@+id/tvFieldPlayers"
+                android:id="@+id/tvFieldType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:text="Sân bóng đá 7 người" />
+                android:text="Sân bóng" />
         </LinearLayout>
 
         <!-- Số điện thoại -->

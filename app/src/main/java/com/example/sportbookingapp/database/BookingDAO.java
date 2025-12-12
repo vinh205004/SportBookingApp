@@ -34,7 +34,7 @@ public class BookingDAO {
     public long addBooking(Booking booking) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-
+        values.put(DatabaseHelper.COL_BOOKING_IS_DISCOUNTED, booking.getIsDiscounted());
         values.put(DatabaseHelper.COL_BOOKING_USER_ID, booking.getUserId());
         values.put(DatabaseHelper.COL_BOOKING_COURT_ID, booking.getCourtId());
         values.put("court_name", booking.getCourtName());
@@ -87,5 +87,36 @@ public class BookingDAO {
         return db.update(DatabaseHelper.TABLE_BOOKING, values,
                 DatabaseHelper.COL_BOOKING_ID + " = ?",
                 new String[]{String.valueOf(bookingId)});
+    }
+    // Hàm đếm số lượng đơn đã đặt (Chỉ tính CONFIRMED, bỏ qua CANCELLED)
+    public int getBookingCount(int userId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        int count = 0;
+
+        // Đếm tất cả đơn của user này mà trạng thái KHÁC 'CANCELLED'
+        String sql = "SELECT COUNT(*) FROM " + DatabaseHelper.TABLE_BOOKING +
+                " WHERE " + DatabaseHelper.COL_BOOKING_USER_ID + " = ?" +
+                " AND " + DatabaseHelper.COL_BOOKING_STATUS + " != 'CANCELLED'";
+
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId)});
+
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+        cursor.close();
+        return count;
+    }
+    // 3. Hàm đếm số đơn ĐÃ ĐƯỢC GIẢM GIÁ (Active)
+    public int countDiscountedBookings(int userId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String sql = "SELECT COUNT(*) FROM " + DatabaseHelper.TABLE_BOOKING +
+                " WHERE " + DatabaseHelper.COL_BOOKING_USER_ID + " = ?" +
+                " AND " + DatabaseHelper.COL_BOOKING_STATUS + " != 'CANCELLED'" +
+                " AND " + DatabaseHelper.COL_BOOKING_IS_DISCOUNTED + " = 1"; // Chỉ đếm đơn có cờ = 1
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId)});
+        int count = 0;
+        if (cursor.moveToFirst()) count = cursor.getInt(0);
+        cursor.close();
+        return count;
     }
 }

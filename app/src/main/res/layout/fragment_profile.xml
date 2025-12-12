@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/profile_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ProfileActivity"
-    android:background="#F5F7FA">
+    android:background="#F5F7FA"
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".fragment.ProfileFragment">
 
-    <!-- Header với back và title -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="0dp"
@@ -41,9 +41,10 @@
             android:textStyle="bold"
             android:gravity="center"
             android:layout_weight="1"/>
+
+        <View android:layout_width="24dp" android:layout_height="24dp"/>
     </LinearLayout>
 
-    <!-- Avatar -->
     <FrameLayout
         android:id="@+id/avatar_container"
         android:layout_width="120dp"
@@ -68,7 +69,6 @@
             android:scaleType="centerInside"
             android:padding="16dp"/>
 
-        <!-- Sửa lỗi icon không hiển thị -->
         <ImageView
             android:id="@+id/iv_person_icon"
             android:layout_width="48dp"
@@ -78,7 +78,6 @@
             app:tint="#4A4A4A"/>
     </FrameLayout>
 
-    <!-- Khung thông tin cá nhân – nổi bật + bo tròn -->
     <LinearLayout
         android:id="@+id/info_container"
         android:layout_width="0dp"
@@ -93,7 +92,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="20dp">
 
-        <!-- Tên -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,7 +103,7 @@
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Nguyễn Văn A"
+                android:text="..."
                 android:textSize="16sp"
                 android:textColor="#333333"
                 android:layout_weight="1"/>
@@ -118,7 +116,6 @@
                 app:tint="#2196F3"/>
         </LinearLayout>
 
-        <!-- Số điện thoại -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,7 +127,7 @@
                 android:id="@+id/tv_phone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="0987654321"
+                android:text="..."
                 android:textSize="16sp"
                 android:textColor="#333333"
                 android:layout_weight="1"/>
@@ -143,7 +140,6 @@
                 app:tint="#2196F3"/>
         </LinearLayout>
 
-        <!-- Email -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -155,7 +151,7 @@
                 android:id="@+id/tv_email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="nguyenvana@example.com"
+                android:text="..."
                 android:textSize="16sp"
                 android:textColor="#333333"
                 android:layout_weight="1"/>
@@ -168,17 +164,5 @@
                 app:tint="#2196F3"/>
         </LinearLayout>
     </LinearLayout>
-
-    <!-- Bottom Navigation -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        app:menu="@menu/bottom_nav_menu"
-        app:labelVisibilityMode="labeled"
-        app:itemIconTint="#2196F3"
-        app:itemTextColor="#2196F3"
-        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

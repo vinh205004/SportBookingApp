@@ -89,7 +89,7 @@
                 android:textColor="#616161"/>
         </LinearLayout>
 
-        <!-- MỚI THÊM: Trạng thái thanh toán -->
+        <!-- Trạng thái thanh toán -->
         <TextView
             android:id="@+id/tvPaymentStatus"
             android:layout_width="wrap_content"

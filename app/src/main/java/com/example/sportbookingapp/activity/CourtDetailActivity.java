@@ -87,7 +87,9 @@ public class CourtDetailActivity extends AppCompatActivity {
 
     private void setupEvents() {
         // Nút Back
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(v -> finish()
+
+        );
 
         // Nút Yêu thích (Giả lập toggle)
         btnFavorite.setOnClickListener(v -> {

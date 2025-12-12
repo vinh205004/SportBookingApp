@@ -14,6 +14,7 @@ public class Booking implements Serializable {
     private double totalPrice;
     private String status;      // "CONFIRMED", "CANCELLED", "PENDING"
     private String paymentMethod; // "CASH", "BANKING"
+    private int isDiscounted;
 
     public Booking(int id, int userId, int courtId, String courtName, String courtImage,
                    String date, String startTime, String endTime,
@@ -79,8 +80,9 @@ public class Booking implements Serializable {
 
     public String getPaymentMethod() { return paymentMethod; }
     public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
-    // Trong Booking.java, thêm:
-    private Court courtObject;  // ⭐ mới, không ảnh hưởng DB
+    public int getIsDiscounted() { return isDiscounted; }
+    public void setIsDiscounted(int isDiscounted) { this.isDiscounted = isDiscounted; }
+    private Court courtObject;
 
     // Getter & Setter
     public Court getCourtObject() {

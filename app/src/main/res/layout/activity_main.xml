@@ -1,171 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
+    android:background="#F5F5F5">
 
-    <org.osmdroid.views.MapView
-        android:id="@+id/osmMap"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/search_container"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="25dp"
-        app:cardElevation="6dp"
-        app:strokeWidth="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="16dp">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_search"
-                app:tint="#808080" />
-
-            <EditText
-                android:id="@+id/edt_search"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:background="@null"
-                android:hint="Tìm sân theo tên, khu vực..."
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textColor="#000000"
-                android:textColorHint="#808080"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:id="@+id/btn_clear_search"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
-                android:visibility="gone"
-                app:tint="#808080" />
-
-            <ImageView
-                android:id="@+id/btn_filter_distance"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_preferences"
-                app:tint="#2196F3"
-                android:contentDescription="Lọc khoảng cách" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <HorizontalScrollView
-        android:id="@+id/filter_scroll"
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:scrollbars="none"
-        android:clipToPadding="false"
-        android:paddingHorizontal="16dp"
-        app:layout_constraintTop_toBottomOf="@id/search_container">
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:singleSelection="true"
-            app:selectionRequired="true">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_all"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="Tất cả"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_football"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bóng đá"
-
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text" />
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_badminton"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cầu lông"
-
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_tennis"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tennis"
-
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_basketball"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bóng rổ"
-
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text" />
-
-        </com.google.android.material.chip.ChipGroup>
-    </HorizontalScrollView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCourts"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:background="#F5F5F5"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/filter_scroll"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:backgroundTint="#2196F3"
-        android:src="@android:drawable/ic_menu_sort_by_size"
-        app:tint="@color/white"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -176,6 +20,6 @@
         app:labelVisibilityMode="labeled"
         app:itemIconTint="#2196F3"
         app:itemTextColor="#2196F3"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_alignParentBottom="true" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

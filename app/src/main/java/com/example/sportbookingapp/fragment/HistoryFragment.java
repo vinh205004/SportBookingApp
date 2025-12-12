@@ -1,115 +1,97 @@
-package com.example.sportbookingapp.activity;
+package com.example.sportbookingapp.fragment;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.Intent; // Thêm import
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sportbookingapp.R;
 import com.example.sportbookingapp.adapter.BookingHistoryAdapter;
 import com.example.sportbookingapp.database.BookingDAO;
+import com.example.sportbookingapp.database.CourtDAO;
 import com.example.sportbookingapp.database.DatabaseHelper;
 import com.example.sportbookingapp.model.Booking;
-import com.google.android.material.bottomnavigation.BottomNavigationView; // Thêm import
+import com.example.sportbookingapp.model.Court;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.example.sportbookingapp.model.Court;
-import com.example.sportbookingapp.database.CourtDAO;
-import com.example.sportbookingapp.model.Court;
 
-
-
-public class HistoryActivity extends AppCompatActivity {
+public class HistoryFragment extends Fragment {
 
     private RecyclerView rcvHistory;
     private ImageView btnBack;
     private TextView tabUpcoming, tabHistory;
-    private BottomNavigationView bottomNavigationView; // Khai báo Menu đáy
+    // Đã xóa BottomNavigationView
 
     private BookingDAO bookingDAO;
+    private CourtDAO courtDAO;
     private BookingHistoryAdapter adapter;
 
     private List<Booking> allBookings;
     private List<Booking> displayList;
-    private int userId = 1;
+    private int userId = 1; // Giả định user ID = 1
     private boolean isShowingUpcoming = true;
-    private CourtDAO courtDAO;
 
-
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
-        courtDAO = new CourtDAO(this);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // 1. Nạp giao diện
+        View view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        initViews();
-        bookingDAO = new BookingDAO(this);
+        // 2. Khởi tạo DAO (Dùng requireContext)
+        courtDAO = new CourtDAO(requireContext());
+        bookingDAO = new BookingDAO(requireContext());
 
-        rcvHistory.setLayoutManager(new LinearLayoutManager(this));
+        // 3. Ánh xạ View
+        initViews(view);
+
+        // 4. Setup RecyclerView
+        rcvHistory.setLayoutManager(new LinearLayoutManager(requireContext()));
         allBookings = new ArrayList<>();
         displayList = new ArrayList<>();
 
-        adapter = new BookingHistoryAdapter(this, displayList, this::showCancelDialog);
+        // Adapter
+        adapter = new BookingHistoryAdapter(requireContext(), displayList, this::showCancelDialog);
         rcvHistory.setAdapter(adapter);
 
+        // 5. Load Data & Sự kiện
         loadData();
         setupEvents();
 
-        // --- CẤU HÌNH MENU ĐÁY ---
-        // Đánh dấu mục "Lịch đặt" là đang chọn
-        bottomNavigationView.setSelectedItemId(R.id.nav_booking);
-
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.nav_explore) {
-                // Chuyển về Trang chủ
-                Intent intent = new Intent(HistoryActivity.this, MainActivity.class);
-                // Xóa stack để khi back không quay lại đây nữa (tùy chọn)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                finish(); // Đóng màn hình này lại
-                return true;
-            } else if (id == R.id.nav_booking) {
-                return true; // Đang ở đây rồi
-            } else if (id == R.id.nav_profile) {
-                Intent intent = new Intent(HistoryActivity.this, ProfileActivity.class);
-                startActivity(intent);
-                finish();
-                return true;
-            }
-
-            return false;
-        });
-
+        return view;
     }
 
-    private void initViews() {
-        rcvHistory = findViewById(R.id.rcvBookingHistory);
-        btnBack = findViewById(R.id.btnBackHistory);
-        tabUpcoming = findViewById(R.id.tabUpcoming);
-        tabHistory = findViewById(R.id.tabHistory);
-        bottomNavigationView = findViewById(R.id.bottom_navigation); // Ánh xạ
+    private void initViews(View view) {
+        // Phải tìm view từ biến 'view'
+        rcvHistory = view.findViewById(R.id.rcvBookingHistory);
+        btnBack = view.findViewById(R.id.btnBackHistory);
+        tabUpcoming = view.findViewById(R.id.tabUpcoming);
+        tabHistory = view.findViewById(R.id.tabHistory);
     }
 
     private void setupEvents() {
+        // Nút Back: Quay về HomeFragment
         btnBack.setOnClickListener(v -> {
-            // Khi bấm nút Back (mũi tên trên cùng), quay về trang chủ
-            Intent intent = new Intent(HistoryActivity.this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            finish();
+            com.google.android.material.bottomnavigation.BottomNavigationView bottomNav
+                    = requireActivity().findViewById(R.id.bottom_navigation);
+
+            if (bottomNav != null) {
+                bottomNav.setSelectedItemId(R.id.nav_explore);
+            }
         });
 
         tabUpcoming.setOnClickListener(v -> {
@@ -131,7 +113,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     private void updateTabUI() {
         if (isShowingUpcoming) {
-            tabUpcoming.setBackgroundResource(R.drawable.bg_card_info_item);
+            tabUpcoming.setBackgroundResource(R.drawable.bg_card_info_item); // Đảm bảo file drawable này tồn tại
             tabUpcoming.setTypeface(null, Typeface.BOLD);
             tabUpcoming.setTextColor(Color.parseColor("#333333"));
 
@@ -152,7 +134,7 @@ public class HistoryActivity extends AppCompatActivity {
     private void loadData() {
         allBookings = bookingDAO.getBookingsByUser(userId);
 
-        // --- Gán courtObject cho từng booking ---
+        // Gán object Court vào Booking để hiển thị tên sân, ảnh sân
         for (Booking booking : allBookings) {
             Court court = courtDAO.getCourtById(booking.getCourtId());
             booking.setCourtObject(court);
@@ -161,17 +143,17 @@ public class HistoryActivity extends AppCompatActivity {
         filterData();
     }
 
-
-
     private void filterData() {
         displayList.clear();
         for (Booking b : allBookings) {
             if (isShowingUpcoming) {
+                // Chỉ hiện đơn ĐÃ XÁC NHẬN (CONFIRMED)
                 if ("CONFIRMED".equals(b.getStatus())) {
                     displayList.add(b);
                 }
             } else {
-                if ("CANCELLED".equals(b.getStatus())) {
+                // Hiện đơn ĐÃ HỦY hoặc ĐÃ HOÀN THÀNH
+                if ("CANCELLED".equals(b.getStatus()) || "COMPLETED".equals(b.getStatus())) {
                     displayList.add(b);
                 }
             }
@@ -180,7 +162,7 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void showCancelDialog(Booking booking) {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(requireContext()) // Dùng requireContext()
                 .setTitle("Xác nhận hủy")
                 .setMessage("Bạn có muốn hủy lịch: " + booking.getCourtName() + " lúc " + booking.getStartTime() + "?")
                 .setPositiveButton("Đồng ý", (dialog, which) -> cancelBooking(booking))
@@ -189,7 +171,8 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void cancelBooking(Booking booking) {
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        // Cập nhật trạng thái hủy vào DB
+        DatabaseHelper dbHelper = new DatabaseHelper(requireContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COL_BOOKING_STATUS, "CANCELLED");
@@ -199,14 +182,8 @@ public class HistoryActivity extends AppCompatActivity {
                 new String[]{String.valueOf(booking.getId())});
 
         if (rows > 0) {
-            Toast.makeText(this, "Đã hủy thành công", Toast.LENGTH_SHORT).show();
-            loadData();
+            Toast.makeText(requireContext(), "Đã hủy thành công", Toast.LENGTH_SHORT).show();
+            loadData(); // Load lại danh sách để cập nhật giao diện
         }
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        bottomNavigationView.setSelectedItemId(R.id.nav_booking);
-    }
-
 }

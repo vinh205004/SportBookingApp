@@ -114,10 +114,52 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView android:text="Tổng tiền:" android:textColor="#2196F3" android:textStyle="bold" android:textSize="16sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                        <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
-                        <TextView android:id="@+id/tvTotalPriceConfirm" android:text="150.000 VNĐ" android:textColor="#2196F3" android:textStyle="bold" android:textSize="18sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tổng tiền:"
+                                android:textColor="#2196F3"
+                                android:textStyle="bold"
+                                android:textSize="16sp" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:id="@+id/tvTotalPriceConfirm"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="150.000 VNĐ"
+                                android:textColor="#2196F3"
+                                android:textStyle="bold"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tvDiscountMessage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="#FFEBEE"
+                            android:padding="8dp"
+                            android:text="🎉 Chúc mừng! Bạn đang đặt đơn thứ 6. Giảm ngay 20%!"
+                            android:textColor="#D32F2F"
+                            android:textStyle="bold"
+                            android:textSize="13sp"
+                            android:gravity="center"
+                            android:visibility="gone" />
+
                     </LinearLayout>
 
                 </LinearLayout>

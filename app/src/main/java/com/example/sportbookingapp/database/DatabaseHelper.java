@@ -8,7 +8,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Tên DB
     private static final String DATABASE_NAME = "SportBooking.db";
-    // Tăng version lên 2 vì đã thay đổi cấu trúc bảng và thêm dữ liệu
     private static final int DATABASE_VERSION = 2;
 
     // Bảng USER
@@ -48,6 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_BOOKING_TOTAL = "total_price";
     public static final String COL_BOOKING_STATUS = "status";
     public static final String COL_BOOKING_PAYMENT = "payment_method";
+    public static final String COL_BOOKING_IS_DISCOUNTED = "is_discounted";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -92,7 +92,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_BOOKING_END + " TEXT, " +
                 COL_BOOKING_TOTAL + " REAL, " +
                 COL_BOOKING_STATUS + " TEXT, " +
-                COL_BOOKING_PAYMENT + " TEXT)";
+                COL_BOOKING_PAYMENT + " TEXT," +
+                COL_BOOKING_IS_DISCOUNTED + " INTEGER DEFAULT 0)";
         db.execSQL(createBooking);
 
         // --- MOCK DATA (12 Sân) ---

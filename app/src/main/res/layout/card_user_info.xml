@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="12dp"
@@ -21,7 +22,6 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <!-- Tên -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,10 +40,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:text="Nguyễn Văn A" />
+
+                tools:text="Nguyễn Văn A"
+                android:text="Đang tải..." />
         </LinearLayout>
 
-        <!-- SĐT -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +63,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:text="0987 654 321" />
+
+                tools:text="0987 654 321"
+                android:text="..." />
         </LinearLayout>
 
     </LinearLayout>

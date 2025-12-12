@@ -25,7 +25,8 @@
         <!-- 1. Màn hình chính -->
         <activity
             android:name=".activity.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -48,12 +49,6 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
 
-        <!-- 5. Màn hình Lịch sử (MỚI THÊM) -->
-        <activity
-            android:name=".activity.HistoryActivity"
-            android:exported="false" />
-        <!-- 5. Màn profile -->
-        <activity android:name=".activity.ProfileActivity" />
         <!-- Màn hình Chi tiết booking -->
         <activity
             android:name=".activity.BookingDetailActivity"
