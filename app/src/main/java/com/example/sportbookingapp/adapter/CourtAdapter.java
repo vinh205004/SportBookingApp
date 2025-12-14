@@ -39,7 +39,6 @@ public class CourtAdapter extends RecyclerView.Adapter<CourtAdapter.CourtViewHol
     @NonNull
     @Override
     public CourtViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // SỬA: Dùng layout item_court.xml
         View view = LayoutInflater.from(context).inflate(R.layout.item_court, parent, false);
         return new CourtViewHolder(view);
     }
@@ -54,14 +53,12 @@ public class CourtAdapter extends RecyclerView.Adapter<CourtAdapter.CourtViewHol
         holder.tvPrice.setText(String.format("%,.0f đ/h", court.getPrice()));
 
         // 2. Xử lý Ảnh (Lấy từ tên file trong Database)
-        // VD: DB lưu "san_bong_1" -> Tìm R.drawable.san_bong_1
         String imgName = court.getImageName();
         int imgResId = context.getResources().getIdentifier(imgName, "drawable", context.getPackageName());
 
         if (imgResId != 0) {
             holder.img.setImageResource(imgResId);
         } else {
-            // Ảnh mặc định nếu không tìm thấy
             holder.img.setImageResource(android.R.drawable.ic_menu_gallery);
         }
 

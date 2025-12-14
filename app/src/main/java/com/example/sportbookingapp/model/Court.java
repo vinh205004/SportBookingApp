@@ -14,7 +14,6 @@ public class Court implements Serializable {
     private double lat;         // Dùng cho Google Map
     private double lng;         // Dùng cho Google Map
 
-    // --- BỔ SUNG MỚI ---
     private String description; // "Mô tả & Tiện ích..."
     private String openTime;    // "06:00"
     private String closeTime;   // "23:00"
