@@ -35,15 +35,13 @@ public class HistoryFragment extends Fragment {
     private RecyclerView rcvHistory;
     private ImageView btnBack;
     private TextView tabUpcoming, tabHistory;
-    // Đã xóa BottomNavigationView
-
     private BookingDAO bookingDAO;
     private CourtDAO courtDAO;
     private BookingHistoryAdapter adapter;
 
     private List<Booking> allBookings;
     private List<Booking> displayList;
-    private int userId = 1; // Giả định user ID = 1
+    private int userId = 1;
     private boolean isShowingUpcoming = true;
 
     @Nullable
@@ -52,7 +50,7 @@ public class HistoryFragment extends Fragment {
         // 1. Nạp giao diện
         View view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        // 2. Khởi tạo DAO (Dùng requireContext)
+        // 2. Khởi tạo DAO
         courtDAO = new CourtDAO(requireContext());
         bookingDAO = new BookingDAO(requireContext());
 
@@ -76,7 +74,6 @@ public class HistoryFragment extends Fragment {
     }
 
     private void initViews(View view) {
-        // Phải tìm view từ biến 'view'
         rcvHistory = view.findViewById(R.id.rcvBookingHistory);
         btnBack = view.findViewById(R.id.btnBackHistory);
         tabUpcoming = view.findViewById(R.id.tabUpcoming);

@@ -82,7 +82,7 @@ public class ProfileFragment extends Fragment {
         btnEditEmail.setOnClickListener(v -> showEditDialog("Sửa email", 3));
     }
 
-    // Hàm Dialog sửa đổi chút để xử lý lưu vào DB
+    // Hàm Dialog
     private void showEditDialog(String title, int fieldType) {
         EditText editText = new EditText(requireContext());
         editText.setPadding(40, 40, 40, 40);
@@ -106,7 +106,8 @@ public class ProfileFragment extends Fragment {
                         else if (fieldType == 2) currentUser.setPhone(newValue);
                         else if (fieldType == 3) currentUser.setEmail(newValue);
 
-                        // 3. Ghi đè vào Database (QUAN TRỌNG)
+                        // 3. Ghi đè vào Database
+
                         boolean success = userDAO.updateUser(currentUser);
 
                         if (success) {

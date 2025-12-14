@@ -52,7 +52,7 @@ public class CourtAdapter extends RecyclerView.Adapter<CourtAdapter.CourtViewHol
         holder.tvAddress.setText(court.getAddress());
         holder.tvPrice.setText(String.format("%,.0f đ/h", court.getPrice()));
 
-        // 2. Xử lý Ảnh (Lấy từ tên file trong Database)
+        // 2. Xử lý Ảnh
         String imgName = court.getImageName();
         int imgResId = context.getResources().getIdentifier(imgName, "drawable", context.getPackageName());
 

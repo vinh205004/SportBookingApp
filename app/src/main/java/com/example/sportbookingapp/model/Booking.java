@@ -32,7 +32,7 @@ public class Booking implements Serializable {
         this.paymentMethod = paymentMethod;
     }
 
-    // Constructor rút gọn để tạo Booking mới (chưa có ID)
+    // Constructor rút gọn để tạo Booking
     public Booking(int userId, int courtId, String courtName, String courtImage,
                    String date, String startTime, String endTime,
                    double totalPrice, String status, String paymentMethod) {
@@ -84,7 +84,6 @@ public class Booking implements Serializable {
     public void setIsDiscounted(int isDiscounted) { this.isDiscounted = isDiscounted; }
     private Court courtObject;
 
-    // Getter & Setter
     public Court getCourtObject() {
         return courtObject;
     }

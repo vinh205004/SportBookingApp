@@ -38,7 +38,7 @@ public class ConfirmBookingActivity extends AppCompatActivity {
     private double originalPrice; // Giá gốc
     private double finalPrice;    // Giá sau khi tính toán
 
-    // Biến cờ để đánh dấu đơn này có được giảm giá hay không (0: Không, 1: Có)
+    // Biến cờ để đánh dấu đơn này có được giảm giá hay không
     private int isDiscountApplied = 0;
 
     private BookingDAO bookingDAO;
@@ -71,7 +71,7 @@ public class ConfirmBookingActivity extends AppCompatActivity {
         // 3. Tự động điền user
         autoFillUserInfo();
 
-        // 4. QUAN TRỌNG: Tính toán giảm giá theo thuật toán mới
+        // 4. Tính toán giảm giá
         calculateDiscountAndDisplay();
 
         // 5. Sự kiện
@@ -129,7 +129,7 @@ public class ConfirmBookingActivity extends AppCompatActivity {
         int newTotal = currentActive + 1;
 
         // 3. Tính "Quota" (Số lượng đơn giảm giá tối đa được phép có)
-        // Quy tắc: Cứ 6 đơn thì được 1 đơn giảm (Tỉ lệ 1/6)
+        // Cứ 6 đơn thì được 1 đơn giảm (Tỉ lệ 1/6)
         int maxAllowedDiscount = newTotal / 6;
 
         DecimalFormat formatter = new DecimalFormat("###,###,###");

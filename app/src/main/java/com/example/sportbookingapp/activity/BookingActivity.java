@@ -72,7 +72,7 @@ public class BookingActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> finish());
 
-        // --- UPDATE: Nút tiếp tục chuyển sang màn hình Xác nhận ---
+        // --- Nút tiếp tục chuyển sang màn hình Xác nhận ---
         btnConfirm.setOnClickListener(v -> goToConfirmScreen());
     }
 

@@ -24,14 +24,12 @@ public class UserDAO {
                 new String[]{String.valueOf(id)});
 
         if (cursor != null && cursor.moveToFirst()) {
-            // Lấy index của các cột để tránh lỗi nếu thứ tự cột thay đổi
             int idIndex = cursor.getColumnIndex(DatabaseHelper.COL_USER_ID);
 
             int nameIndex = cursor.getColumnIndex(DatabaseHelper.COL_USER_NAME);
 
             int phoneIndex = cursor.getColumnIndex(DatabaseHelper.COL_USER_PHONE);
-            int emailIndex = cursor.getColumnIndex(DatabaseHelper.COL_USER_EMAIL); // <-- Quan trọng: Phải lấy cột Email
-
+            int emailIndex = cursor.getColumnIndex(DatabaseHelper.COL_USER_EMAIL);
             // Kiểm tra xem cột có tồn tại không
             if (idIndex != -1 && nameIndex != -1) {
                 int _id = cursor.getInt(idIndex);
@@ -52,8 +50,6 @@ public class UserDAO {
     public boolean updateUser(User user) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-
-        // Kiểm tra tên cột bên DatabaseHelper cho khớp nhé
         values.put(DatabaseHelper.COL_USER_NAME, user.getFullName());
         values.put(DatabaseHelper.COL_USER_PHONE, user.getPhone());
         values.put(DatabaseHelper.COL_USER_EMAIL, user.getEmail());

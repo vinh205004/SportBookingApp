@@ -62,7 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_USER_EMAIL + " TEXT)";
         db.execSQL(createUser);
 
-        // 2. Tạo bảng Court (Đã thêm cột mới)
+        // 2. Tạo bảng Court
         String createCourt = "CREATE TABLE " + TABLE_COURT + " (" +
                 COL_COURT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_COURT_NAME + " TEXT, " +
@@ -95,7 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_BOOKING_IS_DISCOUNTED + " INTEGER DEFAULT 0)";
         db.execSQL(createBooking);
 
-        // --- MOCK DATA (12 Sân) ---
+        // --- MOCK DATA ---
 
         // User mặc định
         db.execSQL("INSERT INTO " + TABLE_USER + " ("+COL_USER_NAME+", "+COL_USER_PHONE+", "+COL_USER_EMAIL+") " +
@@ -380,8 +380,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "'Sân Cầu Lông Đền Lừ', " +
                 "'KĐT Đền Lừ, Hoàng Mai, Hà Nội', " +
                 "'CauLong', " +
-                "80000, " +        // Giá vé
-                "'cl3', " +        // Ảnh: cl3.png
+                "80000, " +
+                "'cl3', " +
                 "4.2, " +
                 "'Parking,Canteen', " +
                 "20.9850, 105.8560, " +

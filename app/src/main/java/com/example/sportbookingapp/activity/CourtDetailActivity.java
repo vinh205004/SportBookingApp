@@ -31,10 +31,9 @@ public class CourtDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_court_detail);
 
         // 1. Nhận dữ liệu từ Intent
-        // Key "court_object" phải trùng khớp với nơi gửi (Adapter/MainActivity)
         currentCourt = (Court) getIntent().getSerializableExtra("court_object");
 
-        // Fallback: Nếu null (chạy test độc lập) thì tạo dữ liệu giả
+        // tạo dữ liệu giả
         if (currentCourt == null) {
             currentCourt = new Court(1, "Sân bóng Thanh Xuân", "123 Nguyễn Trãi, Thanh Xuân", "Sân 7 người", 150000, "san_bong_1", 4.5, "Wifi,Parking", 0, 0, "Sân cỏ nhân tạo tiêu chuẩn FIFA, đèn chiếu sáng tốt.", "06:00", "23:00");
         }

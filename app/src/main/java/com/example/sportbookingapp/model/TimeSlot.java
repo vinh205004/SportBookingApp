@@ -4,8 +4,8 @@ public class TimeSlot {
     private String timeLabel;   // Tên hiển thị: "08:00 - 09:00"
     private String startTime;   // "08:00" (Lưu DB)
     private String endTime;     // "09:00" (Lưu DB)
-    private boolean isBooked;   // Đã có người đặt chưa?
-    private boolean isSelected; // Người dùng đang chọn ô này?
+    private boolean isBooked;
+    private boolean isSelected;
 
     public TimeSlot(String startTime, String endTime, boolean isBooked) {
         this.startTime = startTime;
@@ -15,7 +15,6 @@ public class TimeSlot {
         this.isSelected = false;
     }
 
-    // Getter cần thiết để sửa lỗi Cannot resolve method 'getTimeLabel'
     public String getTimeLabel() { return timeLabel; }
 
     public String getStartTime() { return startTime; }

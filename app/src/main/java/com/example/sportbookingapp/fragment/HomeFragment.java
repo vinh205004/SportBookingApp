@@ -51,7 +51,6 @@ public class HomeFragment extends Fragment implements LocationListener {
     private MapView mapView;
     private CourtDAO courtDAO;
     private FloatingActionButton fabList;
-    // Đã xóa BottomNavigationView vì nó nằm ở Activity cha
     private EditText edtSearch;
     private ImageView btnClearSearch;
     private ChipGroup chipGroup;

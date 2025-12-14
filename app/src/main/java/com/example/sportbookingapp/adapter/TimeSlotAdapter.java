@@ -19,7 +19,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ViewHo
     private List<TimeSlot> list;
     private OnSlotClickListener listener;
 
-    // Interface cập nhật: Có tham số TimeSlot để sửa lỗi Lambda 0 params found 1
+    // Interface
     public interface OnSlotClickListener {
         void onSlotClick(TimeSlot slot);
     }

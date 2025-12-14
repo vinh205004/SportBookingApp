@@ -6,11 +6,11 @@ public class Court implements Serializable {
     private int id;
     private String name;
     private String address;
-    private String type;        // Ví dụ: "Sân 7 người"
+    private String type;
     private double price;       // Ví dụ: 150000
     private String imageName;   // Tên ảnh trong drawable
     private double rating;      // Ví dụ: 4.5
-    private String facilities;  // Ví dụ: "Wifi,Canteen,Parking" (Lưu chuỗi rồi cắt ra xử lý sau)
+    private String facilities;  // Ví dụ: "Wifi,Canteen,Parking"
     private double lat;         // Dùng cho Google Map
     private double lng;         // Dùng cho Google Map
 
@@ -49,12 +49,10 @@ public class Court implements Serializable {
     public double getLat() { return lat; }
     public double getLng() { return lng; }
 
-    // Getter mới
     public String getDescription() { return description; }
     public String getOpenTime() { return openTime; }
     public String getCloseTime() { return closeTime; }
 
-    // --- SETTER ---
     public void setId(int id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setAddress(String address) { this.address = address; }
@@ -66,7 +64,6 @@ public class Court implements Serializable {
     public void setLat(double lat) { this.lat = lat; }
     public void setLng(double lng) { this.lng = lng; }
 
-    // Setter mới
     public void setDescription(String description) { this.description = description; }
     public void setOpenTime(String openTime) { this.openTime = openTime; }
     public void setCloseTime(String closeTime) { this.closeTime = closeTime; }

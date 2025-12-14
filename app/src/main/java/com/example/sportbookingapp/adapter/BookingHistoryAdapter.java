@@ -59,7 +59,7 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
         DecimalFormat formatter = new DecimalFormat("###,###,###");
         holder.tvPrice.setText("Tổng: " + formatter.format(booking.getTotalPrice()) + " VNĐ");
 
-        // --- 1. XỬ LÝ TRẠNG THÁI THANH TOÁN (Logic mới) ---
+        // --- 1. XỬ LÝ TRẠNG THÁI THANH TOÁN  ---
         String method = booking.getPaymentMethod();
 
         // Mặc định nếu null coi như là COD
@@ -77,7 +77,7 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
         if ("CANCELLED".equals(status)) {
             holder.tvStatus.setText("Đã hủy");
             holder.tvStatus.setTextColor(Color.RED);
-            holder.tvStatus.setBackgroundResource(R.drawable.bg_chip_gray); // Đảm bảo có file drawable này
+            holder.tvStatus.setBackgroundResource(R.drawable.bg_chip_gray);
             holder.btnCancel.setVisibility(View.GONE); // Đã hủy thì ẩn nút hủy đi
 
             // Nếu đã hủy thì trạng thái thanh toán nên mờ đi hoặc ẩn
@@ -87,7 +87,7 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
         } else {
             holder.tvStatus.setText("Đã xác nhận");
             holder.tvStatus.setTextColor(Color.parseColor("#007BFF"));
-            holder.tvStatus.setBackgroundResource(R.drawable.bg_badge_blue_light); // Đảm bảo có file drawable này
+            holder.tvStatus.setBackgroundResource(R.drawable.bg_badge_blue_light);
             holder.btnCancel.setVisibility(View.VISIBLE);
         }
 
@@ -128,7 +128,7 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
         return bookingList.size();
     }
 
-    // --- VIEW HOLDER (Nơi khai báo biến View) ---
+    // --- VIEW HOLDER ---
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvStatus, tvDate, tvTime, tvPrice;
         TextView tvPaymentStatus;

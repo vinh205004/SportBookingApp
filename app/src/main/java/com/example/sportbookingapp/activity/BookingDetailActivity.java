@@ -47,7 +47,7 @@ public class BookingDetailActivity extends AppCompatActivity {
         // 2. Lấy dữ liệu từ Intent
         handleIntentData();
 
-        // 3. Load thông tin người dùng thật từ Database (Thay vì cứng Nguyễn Văn A)
+        // 3. Load thông tin người dùng thật từ Database
         loadUserInfo();
 
         // 4. Xử lý sự kiện các nút bấm
@@ -109,7 +109,7 @@ public class BookingDetailActivity extends AppCompatActivity {
         }
     }
 
-    // --- MỚI: Load thông tin User thật từ DB ---
+    // --- Load thông tin User thật từ DB ---
     private void loadUserInfo() {
         userDAO = new UserDAO(this);
         // Lấy user ID = 1 (mặc định)
